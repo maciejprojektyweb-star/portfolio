@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lampka Kreska – wizualizacja 3D produktu</title>
+<meta name="description" content="Projekt pokazowy: model i rendery fikcyjnej lampki biurkowej z Blendera – ujęcia produktowe, scena wieczorna i animacja obrotu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root { --bg: #E4E0D8; --paper: #F2EFE9; --ink: #1E2420; --muted: #5C625D; --green: #2E4B3C; --brass: #A97F44; --line: #CFC9BE; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.6 "Figtree", system-ui, sans-serif; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: "Space Grotesk", system-ui, sans-serif; margin: 0; line-height: 1.06; letter-spacing: -0.02em; }
+:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
+img, video { display: block; width: 100%; height: auto; }
+.hero { padding-block: 40px 8px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 36px; align-items: center; }
+.hero h1 { font-size: clamp(40px, 6vw, 76px); font-weight: 700; color: var(--green); }
+.hero p { margin: 14px 0 0; max-width: 40ch; font-size: 19px; color: var(--muted); }
+.hero figure { margin: 0; border-radius: 12px; overflow: hidden; background: var(--paper); }
+@media (max-width: 760px) { .hero { grid-template-columns: 1fr; gap: 20px; } }
+.gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+.gallery figure { margin: 0; background: var(--paper); border-radius: 10px; overflow: hidden; }
+.gallery figcaption { padding: 10px 14px 12px; font-size: 15px; color: var(--muted); }
+.gallery .wide { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 460px) 1fr; align-items: center; }
+.gallery .wide figcaption { padding: 22px 26px; font-size: 17px; }
+.gallery .wide figcaption b { display: block; font-family: "Space Grotesk", sans-serif; font-size: 24px; color: var(--ink); margin-bottom: 6px; }
+@media (max-width: 760px) { .gallery, .gallery .wide { grid-template-columns: 1fr; } }
+.info { padding-block: 48px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.info h2 { font-size: clamp(26px, 3.4vw, 36px); margin-bottom: 14px; }
+.spec { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; margin: 0; }
+.spec dt { color: var(--muted); }
+.spec dd { margin: 0; font-weight: 500; }
+.offer { margin: 0; padding-left: 20px; }
+.offer li { margin-bottom: 6px; }
+.swatches { display: flex; gap: 10px; margin-top: 18px; align-items: center; color: var(--muted); font-size: 15px; }
+.swatches i { width: 26px; height: 26px; border-radius: 50%; display: inline-block; box-shadow: inset 0 0 0 2px rgba(0,0,0,.08); }
+@media (max-width: 760px) { .info { grid-template-columns: 1fr; gap: 28px; } }
+footer { color: var(--muted); font-size: 15px; padding-block: 24px 32px; }
+</style>
+</head>
+<body>
+<!-- pasek portfolio -->
+<style>
+.pf-bar{background:#1D1A17;color:#E9E2D8;font:500 14px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;position:relative;z-index:40}
+.pf-bar__in{max-width:1180px;margin:0 auto;padding:9px max(16px,env(safe-area-inset-left,0px));display:flex;align-items:center;gap:12px;justify-content:space-between}
+.pf-bar__who{display:flex;align-items:center;gap:10px;min-width:0}
+.pf-bar__mark{flex:none;width:22px;height:22px;border-radius:50%;background:#2A2622;position:relative}
+.pf-bar__mark i{position:absolute;display:block}
+.pf-bar__mark .c{width:9px;height:9px;border-radius:50%;background:#F06A4A;left:4px;top:4px}
+.pf-bar__mark .q{width:7px;height:7px;border-radius:1px;background:#F5C04A;left:10px;top:9px;transform:rotate(14deg)}
+.pf-bar__mark .t{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid #3FA7A0;left:4px;top:11px}
+.pf-bar__txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pf-bar a{flex:none;color:#1D1A17;background:#F5C04A;text-decoration:none;font-weight:600;padding:5px 12px;border-radius:999px}
+.pf-bar a:hover{background:#FFD36B}
+.pf-bar a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media (max-width:560px){.pf-bar__long{display:none}}
+</style>
+<div class="pf-bar" role="note">
+  <div class="pf-bar__in">
+    <div class="pf-bar__who"><span class="pf-bar__mark" aria-hidden="true"><i class="c"></i><i class="q"></i><i class="t"></i></span><span class="pf-bar__txt">Projekt pokazowy<span class="pf-bar__long"> z portfolio Macieja – marka i dane są fikcyjne</span></span></div>
+    <a href="./">Wszystkie projekty</a>
+  </div>
+</div>
+<!-- /pasek portfolio -->
+
+<header class="wrap hero">
+  <div>
+    <h1>Lampka Kreska</h1>
+    <p>Model i rendery fikcyjnej lampki biurkowej, zrobione w Blenderze: ujęcia do sklepu, scena wieczorna i animacja obrotu.</p>
+  </div>
+  <figure><img src="img-lampa-1.jpg" width="1136" height="852" alt="Zielona lampka biurkowa z mosiężnymi przegubami na jasnym tle, ujęcie z przodu pod kątem."></figure>
+</header>
+
+<main class="wrap">
+  <div class="gallery">
+    <figure><img src="img-lampa-2.jpg" width="1200" height="900" loading="lazy" alt="Lampka z boku – widać dwa ramiona i trzy przeguby."><figcaption>Profil – czytelna konstrukcja ramion i przegubów.</figcaption></figure>
+    <figure><img src="img-lampa-3.jpg" width="1200" height="900" loading="lazy" alt="Lampka w ciemnym pomieszczeniu rzuca ciepłe światło na blat."><figcaption>Scena wieczorna – światło z klosza zamiast studyjnego.</figcaption></figure>
+    <figure class="wide">
+      <video src="lampa-obrot.mp4" poster="img-lampa-obrot.jpg" width="480" height="480" muted loop playsinline controls preload="none" aria-label="Animacja: lampka obraca się o 360 stopni."></video>
+      <figcaption><b>Obrót 360°</b>Krótka pętla do karty produktu albo posta w mediach społecznościowych. Kliknij, żeby odtworzyć.</figcaption>
+    </figure>
+  </div>
+
+  <section class="info" aria-label="Szczegóły">
+    <div>
+      <h2>Model</h2>
+      <dl class="spec">
+        <dt>Wysokość</dt><dd>ok. 45 cm, ramiona 30 i 27 cm</dd>
+        <dt>Podstawa</dt><dd>Ø 17 cm, z mosiężnym pierścieniem i włącznikiem</dd>
+        <dt>Materiały</dt><dd>zielony lakier półmat, polerowany mosiądz, białe wnętrze klosza</dd>
+        <dt>Render</dt><dd>Blender, Cycles, oświetlenie studyjne i scena z samym światłem lampy</dd>
+      </dl>
+      <div class="swatches" aria-label="Kolory użyte w modelu"><i style="background:#2E4B3C"></i><i style="background:#C9A063"></i><i style="background:#F3EFE6"></i><span>kolory modelu</span></div>
+    </div>
+    <div>
+      <h2>Co mogę przygotować</h2>
+      <ul class="offer">
+        <li>packshoty produktu na jednolitym tle do sklepu i na Allegro,</li>
+        <li>ujęcia w aranżacji, np. na biurku albo w salonie,</li>
+        <li>warianty kolorystyczne z jednego modelu,</li>
+        <li>animację obrotu albo krótką prezentację działania.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<footer class="wrap">Lampka Kreska to fikcyjny produkt zaprojektowany na potrzeby portfolio.</footer>
+</body>
+</html>

@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palarnia Wrzos – kawa ziarnista ze świeżego palenia</title>
+<meta name="description" content="Projekt pokazowy sklepu internetowego: kawy ziarniste z filtrami, kartą produktu i koszykiem.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root {
+  --heather: #6B3A5B; --heather-d: #552C48; --ink: #2A1A26; --mist: #F4F0F3; --white: #FFFFFF;
+  --mustard: #E3B341; --moss: #4F7A63; --muted: #6E5F69; --line: #E2D9DF;
+  --r: 10px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
+body { margin: 0; background: var(--mist); color: var(--ink); font: 400 16px/1.55 "IBM Plex Sans", system-ui, sans-serif; }
+img { max-width: 100%; }
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--mustard); outline-offset: 2px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3, .brand { font-family: "Syne", "IBM Plex Sans", sans-serif; letter-spacing: -0.01em; margin: 0; line-height: 1.05; }
+
+/* header */
+.top { background: var(--white); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 30; }
+.top .wrap { display: flex; align-items: center; gap: 24px; height: 64px; }
+.brand { font-weight: 800; font-size: 24px; color: var(--heather); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.brand svg { flex: none; }
+.nav { display: flex; gap: 20px; margin-left: auto; }
+.nav a { color: var(--ink); text-decoration: none; font-weight: 500; }
+.nav a:hover { color: var(--heather); }
+.cart-btn { display: flex; align-items: center; gap: 8px; background: var(--heather); color: #fff; border: 0; border-radius: 999px; padding: 9px 16px; font-weight: 600; }
+.cart-btn:hover { background: var(--heather-d); }
+.cart-count { background: var(--mustard); color: var(--ink); border-radius: 999px; min-width: 22px; height: 22px; display: inline-grid; place-items: center; font-size: 13px; padding: 0 6px; }
+@media (max-width: 760px) { .nav { display: none; } .cart-btn { margin-left: auto; } }
+
+/* bag illustration */
+.bag { --c: #C9A3D9; position: relative; width: 100%; aspect-ratio: 3 / 4; container-type: inline-size; }
+.bag .body { position: absolute; inset: 9% 6% 0; background: var(--c); border-radius: 10px 10px 14px 14px; box-shadow: inset -14px 0 0 rgba(0,0,0,.07), inset 14px 0 0 rgba(255,255,255,.08); }
+.bag .top-fold { position: absolute; left: 6%; right: 6%; top: 0; height: 14%; background: var(--c); filter: brightness(.88); border-radius: 6px 6px 2px 2px; }
+.bag .top-fold::after { content: ""; position: absolute; left: 10%; right: 10%; top: 42%; height: 3px; border-radius: 2px; background: rgba(0,0,0,.18); }
+.bag .label { position: absolute; left: 12%; right: 12%; top: 30%; bottom: 16%; background: #FFFDF9; border-radius: 6px; padding: 9% 7%; display: flex; flex-direction: column; gap: 6%; text-align: left; }
+.bag .label b { font: 800 7.2cqw/1 "Syne", sans-serif; color: var(--ink); white-space: nowrap; }
+.bag .label small { font-size: max(7px, 5.2cqw); color: var(--muted); line-height: 1.3; }
+.bag .valve { position: absolute; right: 22%; top: 19%; width: 9%; aspect-ratio: 1; border-radius: 50%; background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 3px rgba(0,0,0,.08); }
+.heat { display: flex; gap: 3px; margin-top: auto; }
+.heat i { flex: 1; height: 5px; border-radius: 2px; background: var(--line); }
+.heat i.on { background: var(--heather); }
+
+/* hero */
+.hero { padding-block: 48px 40px; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+.hero-tag { display: inline-block; font-weight: 600; color: var(--heather); margin-bottom: 14px; }
+.hero h1 { font-size: clamp(44px, 7vw, 84px); font-weight: 800; color: var(--ink); }
+.hero .notes { font-size: 20px; margin: 18px 0 8px; max-width: 34ch; }
+.hero .meta { color: var(--muted); margin: 0 0 22px; }
+.hero .buy { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.price { font-weight: 600; font-size: 22px; }
+.btn { border: 0; border-radius: 999px; padding: 12px 20px; font-weight: 600; background: var(--heather); color: #fff; }
+.btn:hover { background: var(--heather-d); }
+.btn.ghost { background: transparent; color: var(--heather); box-shadow: inset 0 0 0 2px var(--heather); }
+.btn.ghost:hover { background: rgba(107,58,91,.08); }
+.hero-bag { max-width: 360px; justify-self: center; width: 100%; transform: rotate(4deg); }
+.hero-bag .bag { filter: drop-shadow(0 30px 40px rgba(42,26,38,.25)); }
+@media (max-width: 760px) { .hero .wrap { grid-template-columns: 1fr; } .hero-bag { max-width: 220px; order: -1; } }
+
+/* shop */
+.shop { padding-block: 24px 64px; }
+.shop-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; justify-content: space-between; margin-bottom: 20px; }
+.shop-head h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 800; }
+.sort { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+select { border: 1px solid var(--line); background: var(--white); border-radius: 8px; padding: 8px 10px; }
+.layout { display: grid; grid-template-columns: 240px 1fr; gap: 28px; align-items: start; }
+.filters { position: sticky; top: 84px; background: var(--white); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 18px; }
+.filters fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+.filters legend { font-weight: 600; margin-bottom: 4px; padding: 0; }
+.chk { display: flex; align-items: center; gap: 8px; }
+.chk input { width: 18px; height: 18px; accent-color: var(--heather); }
+.chk span.n { margin-left: auto; color: var(--muted); font-size: 14px; }
+.range { display: grid; gap: 6px; }
+.range input { accent-color: var(--heather); width: 100%; }
+.clear { justify-self: start; background: none; border: 0; color: var(--heather); font-weight: 600; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+.filters-toggle { display: none; }
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  .filters { position: static; display: none; }
+  .filters.open { display: grid; }
+  .filters-toggle { display: inline-flex; }
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
+.card { background: var(--white); border: 1px solid var(--line); border-radius: var(--r); display: grid; grid-template-rows: auto 1fr; overflow: hidden; }
+.card .pic { background: color-mix(in srgb, var(--c) 18%, var(--white)); padding: 22px 46px 0; border: 0; display: block; width: 100%; }
+.card .pic .bag { transition: transform .25s ease; max-width: 170px; margin: 0 auto; }
+.card .pic:hover .bag { transform: translateY(-4px); }
+.card .info { padding: 16px; display: grid; gap: 8px; align-content: start; }
+.card h3 { font-size: 21px; font-weight: 700; }
+.card .origin { color: var(--muted); font-size: 14px; }
+.card .tasting { margin: 0; }
+.card .row { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
+.card .row select { flex: 1; min-width: 0; }
+.card .row .btn { padding: 9px 14px; }
+.badge { position: absolute; left: 12px; top: 12px; background: var(--mustard); color: var(--ink); font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+.pic-wrap { position: relative; }
+.empty { grid-column: 1 / -1; background: var(--white); border: 1px dashed var(--line); border-radius: var(--r); padding: 32px; text-align: center; }
+
+/* brew guide */
+.brew { background: var(--ink); color: #EFE6EC; padding-block: 56px; }
+.brew h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 800; color: #fff; margin-bottom: 8px; }
+.brew > .wrap > p { color: #CBBFC8; margin: 0 0 28px; max-width: 60ch; }
+.methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.method { border: 1px solid rgba(255,255,255,.14); border-radius: var(--r); padding: 20px; }
+.method h3 { font-size: 22px; color: #fff; margin-bottom: 10px; }
+.method dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 0 0 12px; }
+.method dt { color: #CBBFC8; }
+.method dd { margin: 0; font-weight: 600; }
+.method ol { margin: 0; padding-left: 20px; color: #DDD2DA; }
+@media (max-width: 860px) { .methods { grid-template-columns: 1fr; } }
+
+footer.site { padding-block: 28px; color: var(--muted); font-size: 14px; }
+
+/* drawer + dialog */
+.scrim { position: fixed; inset: 0; background: rgba(42,26,38,.45); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 50; }
+.scrim.on { opacity: 1; pointer-events: auto; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100%); background: var(--white); z-index: 60; transform: translateX(100%); transition: transform .25s ease; display: grid; grid-template-rows: auto auto 1fr auto; }
+.drawer.on { transform: none; }
+.drawer header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.drawer header h2 { font-size: 26px; font-weight: 800; }
+.x { background: none; border: 0; font-size: 28px; line-height: 1; padding: 4px 8px; color: var(--ink); }
+.ship { padding: 14px 20px; border-bottom: 1px solid var(--line); font-size: 14px; }
+.ship .bar { height: 8px; background: var(--mist); border-radius: 99px; margin-top: 8px; overflow: hidden; }
+.ship .bar i { display: block; height: 100%; background: var(--mustard); border-radius: 99px; transition: width .3s; }
+.lines { overflow: auto; padding: 8px 20px; }
+.line { display: grid; grid-template-columns: 54px 1fr auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.line .mini { width: 54px; }
+.line b { display: block; font-family: "Syne", sans-serif; font-size: 16px; }
+.line small { color: var(--muted); }
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; margin-top: 6px; }
+.qty button { background: none; border: 0; width: 30px; height: 30px; font-size: 18px; }
+.qty span { min-width: 24px; text-align: center; font-weight: 600; }
+.line .lp { font-weight: 600; text-align: right; }
+.line .rm { display: block; background: none; border: 0; color: var(--muted); font-size: 13px; text-decoration: underline; margin-top: 6px; padding: 0; margin-left: auto; }
+.sum { padding: 18px 20px calc(18px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); display: grid; gap: 10px; }
+.sum .tot { display: flex; justify-content: space-between; font-weight: 600; font-size: 18px; }
+.sum .demo-note { font-size: 13px; color: var(--muted); }
+.sum .btn[disabled] { opacity: .55; cursor: not-allowed; }
+.cart-empty { padding: 32px 0; text-align: center; color: var(--muted); }
+
+dialog.product { border: 0; border-radius: 14px; padding: 0; width: min(860px, calc(100% - 24px)); max-height: calc(100% - 24px); color: var(--ink); }
+dialog.product::backdrop { background: rgba(42,26,38,.5); }
+.pd { display: grid; grid-template-columns: 300px 1fr; }
+.pd .pic { background: color-mix(in srgb, var(--c) 20%, var(--white)); padding: 40px 48px; display: grid; align-content: center; }
+.pd .txt { padding: 28px; display: grid; gap: 12px; align-content: start; position: relative; }
+.pd .txt .x { position: absolute; right: 12px; top: 10px; }
+.pd h2 { font-size: 34px; font-weight: 800; padding-right: 36px; }
+.pd .spec { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; margin: 4px 0; }
+.pd .spec dt { color: var(--muted); }
+.pd .spec dd { margin: 0; font-weight: 500; }
+.pd .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+@media (max-width: 700px) { .pd { grid-template-columns: 1fr; } .pd .pic { padding: 24px 90px; } }
+
+.toast { position: fixed; left: 50%; bottom: max(18px, env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 999px; opacity: 0; transition: .2s; z-index: 70; font-weight: 500; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<!-- pasek portfolio -->
+<style>
+.pf-bar{background:#1D1A17;color:#E9E2D8;font:500 14px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;position:relative;z-index:40}
+.pf-bar__in{max-width:1180px;margin:0 auto;padding:9px max(16px,env(safe-area-inset-left,0px));display:flex;align-items:center;gap:12px;justify-content:space-between}
+.pf-bar__who{display:flex;align-items:center;gap:10px;min-width:0}
+.pf-bar__mark{flex:none;width:22px;height:22px;border-radius:50%;background:#2A2622;position:relative}
+.pf-bar__mark i{position:absolute;display:block}
+.pf-bar__mark .c{width:9px;height:9px;border-radius:50%;background:#F06A4A;left:4px;top:4px}
+.pf-bar__mark .q{width:7px;height:7px;border-radius:1px;background:#F5C04A;left:10px;top:9px;transform:rotate(14deg)}
+.pf-bar__mark .t{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid #3FA7A0;left:4px;top:11px}
+.pf-bar__txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pf-bar a{flex:none;color:#1D1A17;background:#F5C04A;text-decoration:none;font-weight:600;padding:5px 12px;border-radius:999px}
+.pf-bar a:hover{background:#FFD36B}
+.pf-bar a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media (max-width:560px){.pf-bar__long{display:none}}
+</style>
+<div class="pf-bar" role="note">
+  <div class="pf-bar__in">
+    <div class="pf-bar__who"><span class="pf-bar__mark" aria-hidden="true"><i class="c"></i><i class="q"></i><i class="t"></i></span><span class="pf-bar__txt">Projekt pokazowy<span class="pf-bar__long"> z portfolio Macieja – marka i dane są fikcyjne</span></span></div>
+    <a href="./">Wszystkie projekty</a>
+  </div>
+</div>
+<!-- /pasek portfolio -->
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Palarnia Wrzos – strona główna">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><ellipse cx="15" cy="15" rx="9" ry="13" fill="#6B3A5B" transform="rotate(28 15 15)"/><path d="M10 6c5 5 5 13 10 18" stroke="#F4F0F3" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>
+      Wrzos
+    </a>
+    <nav class="nav" aria-label="Menu główne">
+      <a href="#kawy">Kawy</a>
+      <a href="#parzenie">Jak parzyć</a>
+    </nav>
+    <button class="cart-btn" id="openCart" aria-haspopup="dialog">Koszyk <span class="cart-count" id="cartCount">0</span></button>
+  </div>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="wrap">
+      <div>
+        <span class="hero-tag">Kawa tygodnia, palona we wtorek</span>
+        <h1 id="heroTitle">Etiopia Guji</h1>
+        <p class="notes">Jagody, czekolada mleczna i jaśmin. Słodka, soczysta, najlepsza z przelewu.</p>
+        <p class="meta">Obróbka naturalna, jasne palenie, 2000–2200 m n.p.m.</p>
+        <div class="buy">
+          <span class="price">62 zł <small style="font-weight:400;color:var(--muted);font-size:15px">/ 250 g</small></span>
+          <button class="btn" data-add="guji">Dodaj do koszyka</button>
+          <button class="btn ghost" data-open="guji">Zobacz szczegóły</button>
+        </div>
+      </div>
+      <div class="hero-bag" id="heroBag"></div>
+    </div>
+  </section>
+
+  <section class="shop" id="kawy" aria-labelledby="shopTitle">
+    <div class="wrap">
+      <div class="shop-head">
+        <h2 id="shopTitle">Kawy ziarniste</h2>
+        <div class="sort">
+          <button class="btn ghost filters-toggle" id="filtersToggle" aria-expanded="false" aria-controls="filters">Filtry</button>
+          <label for="sortSel">Sortuj</label>
+          <select id="sortSel">
+            <option value="pop">najpopularniejsze</option>
+            <option value="asc">cena rosnąco</option>
+            <option value="desc">cena malejąco</option>
+            <option value="roast">od najjaśniejszych</option>
+          </select>
+        </div>
+      </div>
+      <div class="layout">
+        <aside class="filters" id="filters" aria-label="Filtry">
+          <fieldset id="fMethod"><legend>Metoda parzenia</legend></fieldset>
+          <fieldset id="fRoast"><legend>Stopień palenia</legend></fieldset>
+          <fieldset id="fRegion"><legend>Pochodzenie</legend></fieldset>
+          <div class="range">
+            <label for="fPrice"><b>Cena do</b> <span id="fPriceOut">70 zł</span></label>
+            <input type="range" id="fPrice" min="35" max="70" step="1" value="70">
+          </div>
+          <label class="chk"><input type="checkbox" id="fDecaf"> Tylko bezkofeinowe</label>
+          <button class="clear" id="clearF">Wyczyść filtry</button>
+        </aside>
+        <div>
+          <p class="sr" id="resultInfo" aria-live="polite"></p>
+          <div class="grid" id="grid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="brew" id="parzenie" aria-labelledby="brewTitle">
+    <div class="wrap">
+      <h2 id="brewTitle">Jak parzyć</h2>
+      <p>Proporcje na start. Kawa ze świeżego palenia najlepiej smakuje między 7. a 30. dniem od daty na opakowaniu.</p>
+      <div class="methods">
+        <div class="method">
+          <h3>Przelew (drip)</h3>
+          <dl><dt>Kawa</dt><dd>15 g, mielenie średnie</dd><dt>Woda</dt><dd>250 ml, 93–96°C</dd><dt>Czas</dt><dd>ok. 3 minuty</dd></dl>
+          <ol><li>Zalej 40 ml i odczekaj 30 sekund.</li><li>Dolewaj spiralnie do 250 ml.</li><li>Zakończ, gdy woda przejdzie przez kawę.</li></ol>
+        </div>
+        <div class="method">
+          <h3>Espresso</h3>
+          <dl><dt>Kawa</dt><dd>18 g, mielenie drobne</dd><dt>W filiżance</dt><dd>36–40 g</dd><dt>Czas</dt><dd>25–30 sekund</dd></dl>
+          <ol><li>Wyrównaj i ubij kawę w kolbie.</li><li>Uruchom ekspres i zważ napar.</li><li>Za kwaśne? Zmiel drobniej.</li></ol>
+        </div>
+        <div class="method">
+          <h3>Kawiarka</h3>
+          <dl><dt>Kawa</dt><dd>do pełna, bez ubijania</dd><dt>Woda</dt><dd>gorąca, do zaworu</dd><dt>Ogień</dt><dd>średni</dd></dl>
+          <ol><li>Wlej gorącą wodę do dolnej części.</li><li>Zdejmij z ognia, gdy kawa zacznie syczeć.</li><li>Ostudź dno pod zimną wodą.</li></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site"><div class="wrap">Palarnia Wrzos to fikcyjna marka. Zamówienia w tym demo nie są realizowane.</div></footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
+  <header><h2 id="cartTitle">Koszyk</h2><button class="x" id="closeCart" aria-label="Zamknij koszyk">×</button></header>
+  <div class="ship" id="ship"></div>
+  <div class="lines" id="lines"></div>
+  <div class="sum">
+    <div class="tot"><span>Razem</span><span id="total">0 zł</span></div>
+    <button class="btn" disabled>Przejdź do zamówienia</button>
+    <span class="demo-note">To demo – zamówienie nie zostanie złożone.</span>
+  </div>
+</aside>
+
+<dialog class="product" id="pd" aria-labelledby="pdTitle"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var COFFEES = [
+    { id: "guji", name: "Etiopia Guji", region: "Afryka", country: "Etiopia", process: "naturalna", roast: 1, methods: ["przelew"], notes: ["jagody", "czekolada mleczna", "jaśmin"], price: 62, color: "#C9A3D9", pop: 1, isNew: true, variety: "odmiany lokalne", altitude: "2000–2200 m", desc: "Kawa suszona w całych owocach, dzięki czemu jest słodka i owocowa. Jasne palenie zostawia jej soczystość." },
+    { id: "huila", name: "Kolumbia Huila", region: "Ameryka Płd.", country: "Kolumbia", process: "myta", roast: 3, methods: ["espresso", "przelew"], notes: ["karmel", "czerwone jabłko", "orzech laskowy"], price: 54, color: "#E7B65C", pop: 2, variety: "Caturra, Castillo", altitude: "1600–1800 m", desc: "Zbalansowana kawa na co dzień. W espresso karmelowa, z przelewu bardziej jabłkowa." },
+    { id: "cerrado", name: "Brazylia Cerrado", region: "Ameryka Płd.", country: "Brazylia", process: "naturalna", roast: 4, methods: ["espresso", "kawiarka"], notes: ["kakao", "orzechy", "toffi"], price: 44, color: "#8A5A44", pop: 3, variety: "Mundo Novo, Catuai", altitude: "1000–1200 m", desc: "Pełne ciało i niska kwasowość. Dobrze znosi mleko i kawiarkę." },
+    { id: "nyeri", name: "Kenia Nyeri AA", region: "Afryka", country: "Kenia", process: "myta", roast: 1, methods: ["przelew"], notes: ["czarna porzeczka", "grejpfrut", "cukier trzcinowy"], price: 68, color: "#B8324F", pop: 6, variety: "SL28, SL34", altitude: "1700–1900 m", desc: "Wyrazista kwasowość i porzeczkowa słodycz. Dla lubiących kawy owocowe i czyste." },
+    { id: "antigua", name: "Gwatemala Antigua", region: "Ameryka Środk.", country: "Gwatemala", process: "myta", roast: 3, methods: ["espresso", "kawiarka"], notes: ["gorzka czekolada", "śliwka", "przyprawy"], price: 52, color: "#4E6E58", pop: 4, variety: "Bourbon", altitude: "1500–1700 m", desc: "Czekoladowa i lekko korzenna. Sprawdza się w espresso i w kawiarce." },
+    { id: "decaf", name: "Peru bezkofeinowa", region: "Ameryka Płd.", country: "Peru", process: "myta, dekofeinizacja wodą", roast: 3, methods: ["espresso", "przelew", "kawiarka"], notes: ["czekolada mleczna", "migdał"], price: 56, color: "#9BB7C9", pop: 7, decaf: true, variety: "Typica, Caturra", altitude: "1600–1800 m", desc: "Kofeina usunięta samą wodą, bez rozpuszczalników. Smakuje jak zwykła, łagodna kawa." },
+    { id: "poranna", name: "Mieszanka Poranna", region: "Mieszanka", country: "Brazylia i Kolumbia", process: "naturalna i myta", roast: 4, methods: ["espresso", "kawiarka"], notes: ["czekolada", "karmel", "orzech"], price: 39, color: "#E58E5A", pop: 5, variety: "różne", altitude: "1000–1800 m", desc: "Nasza codzienna mieszanka do espresso i cappuccino. Przewidywalna i słodka." },
+    { id: "rwanda", name: "Rwanda Nyamasheke", region: "Afryka", country: "Rwanda", process: "myta", roast: 2, methods: ["przelew"], notes: ["czarna herbata", "pomarańcza", "miód"], price: 64, color: "#D6C35A", pop: 8, isNew: true, variety: "Red Bourbon", altitude: "1800–2000 m", desc: "Delikatna i herbaciana, z cytrusową słodyczą. Świetna na chłodno." }
+  ];
+  var ROAST = ["", "jasne", "jasne-średnie", "średnie", "średnio-ciemne", "ciemne"];
+  var METHODS = ["przelew", "espresso", "kawiarka"];
+  var REGIONS = ["Afryka", "Ameryka Płd.", "Ameryka Środk.", "Mieszanka"];
+  var SIZES = { "250": 1, "1000": 3.6 };
+  var FREE = 150;
+  var $ = function (s) { return document.querySelector(s); };
+  var byId = {}; COFFEES.forEach(function (c) { byId[c.id] = c; });
+  var zl = function (v) { return (Math.round(v * 100) / 100).toFixed(2).replace(".", ",").replace(",00", "") + " zł"; };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (m) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]; }); };
+
+  function bagHTML(c) {
+    var heat = ""; for (var i = 1; i <= 5; i++) heat += '<i class="' + (i <= c.roast ? "on" : "") + '"></i>';
+    return '<div class="bag" style="--c:' + c.color + '" aria-hidden="true"><div class="top-fold"></div><div class="body"></div><div class="valve"></div>' +
+      '<div class="label"><b>' + esc(c.name.split(" ")[0]) + '</b><small>' + esc(c.notes.slice(0, 2).join(", ")) + '</small><div class="heat">' + heat + '</div></div></div>';
+  }
+  $("#heroBag").innerHTML = bagHTML(byId.guji);
+
+  /* filters */
+  var state = { methods: [], roast: [], regions: [], max: 70, decaf: false, sort: "pop" };
+  function chk(group, val, label) {
+    var n = COFFEES.filter(function (c) {
+      if (group === "methods") return c.methods.indexOf(val) > -1;
+      if (group === "roast") return roastGroup(c.roast) === val;
+      return c.region === val;
+    }).length;
+    return '<label class="chk"><input type="checkbox" data-g="' + group + '" value="' + esc(val) + '"> ' + esc(label) + ' <span class="n">' + n + '</span></label>';
+  }
+  function roastGroup(r) { return r <= 2 ? "jasne" : r === 3 ? "średnie" : "ciemniejsze"; }
+  $("#fMethod").insertAdjacentHTML("beforeend", METHODS.map(function (m) { return chk("methods", m, m[0].toUpperCase() + m.slice(1)); }).join(""));
+  $("#fRoast").insertAdjacentHTML("beforeend", ["jasne", "średnie", "ciemniejsze"].map(function (r) { return chk("roast", r, r[0].toUpperCase() + r.slice(1)); }).join(""));
+  $("#fRegion").insertAdjacentHTML("beforeend", REGIONS.map(function (r) { return chk("regions", r, r); }).join(""));
+  $("#filters").addEventListener("change", function (e) {
+    var t = e.target;
+    if (t.dataset.g) {
+      var arr = state[t.dataset.g];
+      if (t.checked) arr.push(t.value); else arr.splice(arr.indexOf(t.value), 1);
+    }
+    if (t.id === "fDecaf") state.decaf = t.checked;
+    render();
+  });
+  $("#fPrice").addEventListener("input", function (e) { state.max = +e.target.value; $("#fPriceOut").textContent = state.max + " zł"; render(); });
+  $("#sortSel").addEventListener("change", function (e) { state.sort = e.target.value; render(); });
+  $("#clearF").addEventListener("click", clearFilters);
+  function clearFilters() {
+    state.methods = []; state.roast = []; state.regions = []; state.max = 70; state.decaf = false;
+    document.querySelectorAll("#filters input[type=checkbox]").forEach(function (i) { i.checked = false; });
+    $("#fPrice").value = 70; $("#fPriceOut").textContent = "70 zł"; render();
+  }
+  $("#filtersToggle").addEventListener("click", function () {
+    var f = $("#filters"); var open = f.classList.toggle("open"); this.setAttribute("aria-expanded", open);
+  });
+
+  function visible() {
+    var list = COFFEES.filter(function (c) {
+      if (state.methods.length && !state.methods.some(function (m) { return c.methods.indexOf(m) > -1; })) return false;
+      if (state.roast.length && state.roast.indexOf(roastGroup(c.roast)) < 0) return false;
+      if (state.regions.length && state.regions.indexOf(c.region) < 0) return false;
+      if (c.price > state.max) return false;
+      if (state.decaf && !c.decaf) return false;
+      return true;
+    });
+    var s = state.sort;
+    list.sort(function (a, b) { return s === "asc" ? a.price - b.price : s === "desc" ? b.price - a.price : s === "roast" ? a.roast - b.roast || a.pop - b.pop : a.pop - b.pop; });
+    return list;
+  }
+  function render() {
+    var list = visible();
+    $("#resultInfo").textContent = "Pokazano kaw: " + list.length;
+    if (!list.length) {
+      $("#grid").innerHTML = '<div class="empty"><p>Żadna kawa nie pasuje do tych filtrów.</p><button class="btn ghost" id="emptyClear">Wyczyść filtry</button></div>';
+      $("#emptyClear").addEventListener("click", clearFilters);
+      return;
+    }
+    $("#grid").innerHTML = list.map(function (c) {
+      return '<article class="card" style="--c:' + c.color + '">' +
+        '<div class="pic-wrap"><button class="pic" data-open="' + c.id + '" aria-label="Szczegóły: ' + esc(c.name) + '">' + bagHTML(c) + '</button>' + (c.isNew ? '<span class="badge">Nowość</span>' : "") + '</div>' +
+        '<div class="info"><h3>' + esc(c.name) + '</h3>' +
+        '<span class="origin">' + esc(ROAST[c.roast][0].toUpperCase() + ROAST[c.roast].slice(1)) + ' palenie, ' + esc(c.methods.join(", ")) + '</span>' +
+        '<p class="tasting">' + esc(c.notes.join(", ")) + '</p>' +
+        '<div class="row"><label class="sr" for="sz-' + c.id + '">Opakowanie</label><select id="sz-' + c.id + '"><option value="250">250 g – ' + zl(c.price) + '</option><option value="1000">1 kg – ' + zl(c.price * SIZES["1000"]) + '</option></select>' +
+        '<button class="btn" data-add="' + c.id + '">Dodaj</button></div></div></article>';
+    }).join("");
+  }
+
+  /* cart */
+  var cart = [];
+  try { cart = JSON.parse(localStorage.getItem("wrzos-cart") || "[]") || []; } catch (e) { cart = []; }
+  cart = cart.filter(function (l) { return byId[l.id] && SIZES[l.size]; });
+  function save() { try { localStorage.setItem("wrzos-cart", JSON.stringify(cart)); } catch (e) {} }
+  function add(id, size) {
+    size = size || "250";
+    var l = cart.find(function (x) { return x.id === id && x.size === size; });
+    if (l) l.qty++; else cart.push({ id: id, size: size, qty: 1 });
+    save(); drawCart(); toast("Dodano do koszyka: " + byId[id].name + (size === "1000" ? " (1 kg)" : " (250 g)"));
+  }
+  function linePrice(l) { return byId[l.id].price * SIZES[l.size] * l.qty; }
+  function drawCart() {
+    var count = cart.reduce(function (s, l) { return s + l.qty; }, 0);
+    var total = cart.reduce(function (s, l) { return s + linePrice(l); }, 0);
+    $("#cartCount").textContent = count;
+    $("#total").textContent = zl(total);
+    var left = Math.max(0, FREE - total);
+    $("#ship").innerHTML = (left > 0 ? "Do darmowej dostawy brakuje <b>" + zl(left) + "</b>" : "<b>Masz darmową dostawę.</b>") +
+      '<div class="bar"><i style="width:' + Math.min(100, total / FREE * 100) + '%"></i></div>';
+    if (!cart.length) { $("#lines").innerHTML = '<p class="cart-empty">Koszyk jest pusty. Wybierz kawę z listy.</p>'; return; }
+    $("#lines").innerHTML = cart.map(function (l, i) {
+      var c = byId[l.id];
+      return '<div class="line"><div class="mini">' + bagHTML(c) + '</div><div><b>' + esc(c.name) + '</b><small>' + (l.size === "1000" ? "1 kg" : "250 g") + '</small><br>' +
+        '<span class="qty"><button data-q="' + i + '" data-d="-1" aria-label="Mniej">−</button><span>' + l.qty + '</span><button data-q="' + i + '" data-d="1" aria-label="Więcej">+</button></span></div>' +
+        '<div><span class="lp">' + zl(linePrice(l)) + '</span><button class="rm" data-rm="' + i + '">Usuń</button></div></div>';
+    }).join("");
+  }
+  $("#lines").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.q) { var l = cart[+b.dataset.q]; l.qty += +b.dataset.d; if (l.qty < 1) cart.splice(+b.dataset.q, 1); }
+    if (b.dataset.rm) cart.splice(+b.dataset.rm, 1);
+    save(); drawCart();
+  });
+  var lastFocus = null;
+  function openCart() { lastFocus = document.activeElement; $("#drawer").classList.add("on"); $("#drawer").setAttribute("aria-hidden", "false"); $("#scrim").classList.add("on"); $("#closeCart").focus(); }
+  function closeCart() { $("#drawer").classList.remove("on"); $("#drawer").setAttribute("aria-hidden", "true"); $("#scrim").classList.remove("on"); if (lastFocus) lastFocus.focus(); }
+  $("#openCart").addEventListener("click", openCart);
+  $("#closeCart").addEventListener("click", closeCart);
+  $("#scrim").addEventListener("click", closeCart);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && $("#drawer").classList.contains("on")) closeCart(); });
+
+  /* product dialog */
+  var pd = $("#pd");
+  function openProduct(id) {
+    var c = byId[id]; var heat = "";
+    pd.style.setProperty("--c", c.color);
+    pd.innerHTML = '<div class="pd" style="--c:' + c.color + '"><div class="pic">' + bagHTML(c) + '</div><div class="txt">' +
+      '<button class="x" data-close aria-label="Zamknij">×</button><h2 id="pdTitle">' + esc(c.name) + '</h2>' +
+      '<p style="margin:0;font-size:18px">' + esc(c.notes.join(", ")) + '</p><p style="margin:0;color:var(--muted)">' + esc(c.desc) + '</p>' +
+      '<dl class="spec"><dt>Kraj</dt><dd>' + esc(c.country) + '</dd><dt>Odmiana</dt><dd>' + esc(c.variety) + '</dd><dt>Obróbka</dt><dd>' + esc(c.process) + '</dd><dt>Wysokość</dt><dd>' + esc(c.altitude) + '</dd><dt>Palenie</dt><dd>' + esc(ROAST[c.roast]) + '</dd><dt>Do</dt><dd>' + esc(c.methods.join(", ")) + '</dd></dl>' +
+      '<div class="row"><label class="sr" for="pdSize">Opakowanie</label><select id="pdSize"><option value="250">250 g – ' + zl(c.price) + '</option><option value="1000">1 kg – ' + zl(c.price * SIZES["1000"]) + '</option></select>' +
+      '<button class="btn" data-pdadd="' + c.id + '">Dodaj do koszyka</button></div></div></div>';
+    if (pd.showModal) pd.showModal(); else pd.setAttribute("open", "");
+  }
+  pd.addEventListener("click", function (e) {
+    if (e.target === pd || e.target.closest("[data-close]")) { pd.close ? pd.close() : pd.removeAttribute("open"); return; }
+    var b = e.target.closest("[data-pdadd]"); if (b) { add(b.dataset.pdadd, $("#pdSize").value); pd.close ? pd.close() : pd.removeAttribute("open"); }
+  });
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("[data-add]");
+    if (a) { var sel = document.getElementById("sz-" + a.dataset.add); add(a.dataset.add, a.closest(".card") && sel ? sel.value : "250"); }
+    var o = e.target.closest("[data-open]");
+    if (o) openProduct(o.dataset.open);
+  });
+
+  var tt;
+  function toast(t) { var el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(tt); tt = setTimeout(function () { el.classList.remove("on"); }, 2200); }
+
+  render(); drawCart();
+})();
+</script>
+</body>
+</html>
