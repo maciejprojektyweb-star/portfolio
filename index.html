@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maciej – portfolio stron i aplikacji</title>
+<meta name="description" content="Projekty pokazowe: strony internetowe, aplikacje webowe i narzędzia dla firm.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+:root { --navy: #12304A; --amber: #F2A33A; --bg: #F5F6F8; --text: #1C2733; --muted: #5E6B78; --line: #DCE1E7; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: "Hanken Grotesk", system-ui, sans-serif; font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+header { padding-block: 56px 32px; display: grid; gap: 14px; }
+.mono { width: 52px; height: 52px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font: 700 26px "Bricolage Grotesque", sans-serif; position: relative; }
+.mono::after { content: ""; position: absolute; bottom: 12px; width: 16px; height: 3px; border-radius: 2px; background: var(--amber); }
+h1, h2 { font-family: "Bricolage Grotesque", "Hanken Grotesk", sans-serif; color: var(--navy); margin: 0; line-height: 1.1; text-wrap: balance; }
+h1 { font-size: clamp(32px, 5vw, 48px); }
+h2 { font-size: 24px; }
+header p { color: var(--muted); max-width: 60ch; margin: 0; }
+.list { display: grid; gap: 28px; padding-bottom: 56px; }
+article { background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: grid; grid-template-columns: 1.3fr 1fr; }
+article img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.body { padding: 26px; display: grid; gap: 12px; align-content: start; }
+.body p { margin: 0; color: var(--muted); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tags span { font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: var(--bg); color: var(--navy); }
+a.btn { justify-self: start; margin-top: 6px; display: inline-block; padding: 11px 18px; border-radius: 8px; background: var(--navy); color: #fff; text-decoration: none; font-weight: 600; }
+a.btn:hover { background: #1D4C72; }
+a.btn:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+footer { color: var(--muted); font-size: 14px; padding-bottom: 32px; }
+@media (max-width: 780px) { article { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="mono" aria-hidden="true">M</div>
+  <h1>Strony i aplikacje, które oszczędzają czas</h1>
+  <p>Maciej, student informatyki algorytmicznej na Politechnice Wrocławskiej. Poniżej projekty pokazowe – marki i dane są fikcyjne, wszystko działa w przeglądarce.</p>
+</header>
+<main class="wrap list">
+  <article>
+    <img src="img-pod-lipami.jpg" alt="Strona inwestycji Pod Lipami na komputerze i telefonie">
+    <div class="body">
+      <h2>Pod Lipami – strona inwestycji z wyszukiwarką mieszkań</h2>
+      <p>Interaktywna elewacja (klik w piętro), filtry po pokojach, piętrze, metrażu i cenie, karta mieszkania z rzutem i formularz zapytania.</p>
+      <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>SVG</span><span>RWD</span></div>
+      <a class="btn" href="pod-lipami.html">Otwórz demo</a>
+    </div>
+  </article>
+  <article>
+    <img src="img-generator-ofert.jpg" alt="Generator ofert PDF na komputerze i telefonie">
+    <div class="body">
+      <h2>Generator ofert PDF</h2>
+      <p>Wybór spółki, pozycje z rabatem i stawkami VAT, podgląd A4 na żywo, kwota słownie i pobieranie PDF z polskimi znakami. Szkic zapisuje się w przeglądarce.</p>
+      <div class="tags"><span>JavaScript</span><span>pdfmake</span><span>aplikacja webowa</span></div>
+      <a class="btn" href="generator-ofert.html">Otwórz demo</a>
+    </div>
+  </article>
+  <article>
+    <img src="img-mieta.jpg" alt="Strona gabinetu stomatologicznego Mięta na komputerze i telefonie">
+    <div class="body">
+      <h2>Mięta – strona gabinetu stomatologicznego</h2>
+      <p>Responsywna wizytówka: usługi z cenami, przebieg pierwszej wizyty, cennik, zespół, FAQ i formularz prośby o termin.</p>
+      <div class="tags"><span>HTML</span><span>CSS</span><span>RWD</span><span>SEO</span></div>
+      <a class="btn" href="mieta-stomatologia.html">Otwórz demo</a>
+    </div>
+  </article>
+</main>
+<footer class="wrap">Projekty pokazowe · marki, osoby i dane są fikcyjne.</footer>
+</body>
+</html>

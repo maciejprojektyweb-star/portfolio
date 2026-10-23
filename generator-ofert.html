@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generator ofert PDF</title>
+<meta name="description" content="Generator ofert handlowych: wybór spółki, pozycje z rabatem i VAT, podgląd A4 na żywo i pobieranie PDF.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: two-pane tool — editable form on the left, live A4 preview on the right; stacks on phones. */
+:root {
+  --bg: #EEF1F4;
+  --panel: #FFFFFF;
+  --ink: #15212E;
+  --text: #2A3542;
+  --muted: #677382;
+  --line: #D8DEE5;
+  --accent: #1F5FAF;
+  --accent-soft: #E3EDF9;
+  --danger: #B3402F;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+header.app { background: var(--ink); color: #fff; }
+header.app .in { max-width: 1440px; margin: 0 auto; padding: 12px max(16px, env(safe-area-inset-right, 0px)) 12px max(16px, env(safe-area-inset-left, 0px)); display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+header.app h1 { font-size: 17px; font-weight: 600; margin: 0; display: flex; align-items: center; gap: 10px; }
+header.app h1 span { font-weight: 400; color: #AAB6C3; font-size: 14px; }
+.hbtns { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+button { font: 600 14px var(--sans); border-radius: 6px; cursor: pointer; padding: 9px 14px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.dark { background: transparent; border-color: #3B4A5B; color: #fff; }
+button.link { border: 0; background: none; color: var(--accent); padding: 6px 4px; }
+button.icon { padding: 6px 9px; color: var(--danger); }
+.layout { max-width: 1440px; margin: 0 auto; padding: 20px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px)); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 1080px) { .layout { grid-template-columns: 1fr; } }
+.form { display: grid; gap: 16px; min-width: 0; }
+fieldset { margin: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); padding: 16px; display: grid; gap: 12px; min-width: 0; }
+legend { font-weight: 600; color: var(--ink); padding: 0 6px; font-size: 14px; }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+label { display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .02em; }
+input, select, textarea { font: 14px var(--sans); color: var(--text); padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: #FAFBFC; width: 100%; min-width: 0; }
+textarea { resize: vertical; min-height: 64px; }
+input:focus, select:focus, textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); background: #fff; }
+.companies { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.co { border: 2px solid var(--line); border-radius: 8px; padding: 10px 12px; cursor: pointer; display: grid; gap: 2px; background: #fff; text-align: left; font-weight: 400; }
+.co b { color: var(--ink); font-size: 14px; }
+.co small { color: var(--muted); font-size: 12px; }
+.co[aria-pressed="true"] { border-color: var(--co, var(--accent)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--co, var(--accent)) 18%, transparent); }
+@media (max-width: 520px) { .companies { grid-template-columns: 1fr; } }
+.items { display: grid; gap: 8px; }
+.item { display: grid; grid-template-columns: minmax(0, 3fr) 70px 70px 110px 80px 70px auto; gap: 8px; align-items: end; padding-bottom: 8px; border-bottom: 1px dashed var(--line); }
+.item:last-child { border-bottom: 0; }
+.item label span { display: none; }
+.items-head { display: grid; grid-template-columns: minmax(0, 3fr) 70px 70px 110px 80px 70px 36px; gap: 8px; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+@media (max-width: 700px) {
+  .items-head { display: none; }
+  .item { grid-template-columns: 1fr 1fr 1fr; }
+  .item .name { grid-column: 1 / -1; }
+  .item label span { display: inline; }
+}
+.sumbar { display: flex; justify-content: flex-end; gap: 18px; flex-wrap: wrap; font-family: var(--mono); font-size: 14px; color: var(--muted); }
+.sumbar b { color: var(--ink); font-weight: 500; }
+.preview-wrap { position: sticky; top: 16px; min-width: 0; display: grid; gap: 10px; }
+.preview-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.paper-box { overflow: auto; border-radius: 6px; }
+.paper { width: 100%; max-width: 794px; aspect-ratio: 210 / 297; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 12px 32px -12px rgba(21,33,46,.25); padding: 6.5% 7%; display: flex; flex-direction: column; gap: 14px; font-size: clamp(8px, 1.05vw, 12px); color: #222; margin: 0 auto; }
+@media (max-width: 1080px) { .preview-wrap { position: static; } .paper { font-size: clamp(7px, 1.9vw, 12px); } }
+.p-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.p-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1.35em; color: var(--co, #1F5FAF); }
+.p-logo svg { width: 2.2em; height: 2.2em; }
+.p-co { text-align: right; font-size: .85em; color: #555; line-height: 1.45; }
+.p-title { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid var(--co, #1F5FAF); padding-bottom: 6px; }
+.p-title h2 { margin: 0; font-size: 1.8em; color: #111; letter-spacing: -.01em; }
+.p-title div { font-family: var(--mono); font-size: .9em; color: #555; text-align: right; }
+.p-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: .92em; }
+.p-parties h4 { margin: 0 0 3px; font-size: .75em; text-transform: uppercase; letter-spacing: .08em; color: #888; }
+.p-table { width: 100%; border-collapse: collapse; font-size: .9em; }
+.p-table th { text-align: left; font-size: .78em; text-transform: uppercase; letter-spacing: .05em; color: #fff; background: var(--co, #1F5FAF); padding: 5px 6px; }
+.p-table td { padding: 5px 6px; border-bottom: 1px solid #E6E6E6; vertical-align: top; }
+.p-table .n { text-align: right; font-family: var(--mono); white-space: nowrap; }
+.p-totals { margin-left: auto; width: 55%; font-size: .92em; display: grid; gap: 2px; }
+.p-totals div { display: flex; justify-content: space-between; gap: 10px; }
+.p-totals .grand { border-top: 2px solid #111; margin-top: 4px; padding-top: 4px; font-weight: 700; font-size: 1.15em; }
+.p-totals span:last-child { font-family: var(--mono); }
+.p-words { font-size: .85em; color: #444; }
+.p-notes { font-size: .88em; color: #333; white-space: pre-line; }
+.p-foot { margin-top: auto; display: flex; justify-content: space-between; gap: 12px; font-size: .78em; color: #777; border-top: 1px solid #E6E6E6; padding-top: 6px; }
+.toast { position: fixed; bottom: max(16px, env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 14px; box-shadow: 0 10px 30px -10px rgba(0,0,0,.4); }
+.demo { font-size: 12px; color: var(--muted); text-align: center; padding-bottom: 20px; }
+</style>
+</head>
+<body>
+<header class="app">
+  <div class="in">
+    <h1>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h5"/></svg>
+      Generator ofert <span>szablon dla grupy Alto</span>
+    </h1>
+    <div class="hbtns">
+      <button class="dark" type="button" id="btn-new">Nowa oferta</button>
+      <button class="dark" type="button" id="btn-save">Zapisz szkic</button>
+      <button class="primary" type="button" id="btn-pdf">Pobierz PDF</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <form class="form" id="form" autocomplete="off" onsubmit="return false">
+    <fieldset>
+      <legend>Spółka wystawiająca</legend>
+      <div class="companies" id="companies"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Oferta</legend>
+      <div class="row">
+        <label>Numer oferty<input id="o-number"></label>
+        <label>Data<input id="o-date" type="date"></label>
+        <label>Ważna (dni)<input id="o-valid" type="number" min="1" value="14"></label>
+        <label>Termin realizacji<input id="o-term" placeholder="np. 3 tygodnie od zamówienia"></label>
+      </div>
+      <label>Tytuł oferty<input id="o-title" placeholder="np. Montaż pompy ciepła z instalacją"></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Klient</legend>
+      <div class="row">
+        <label>Nazwa firmy lub imię i nazwisko<input id="c-name"></label>
+        <label>NIP (opcjonalnie)<input id="c-nip" inputmode="numeric"></label>
+      </div>
+      <div class="row">
+        <label>Adres<input id="c-address"></label>
+        <label>Osoba kontaktowa / e-mail<input id="c-contact"></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Pozycje</legend>
+      <div class="items-head" aria-hidden="true"><span>Nazwa</span><span>Ilość</span><span>J.m.</span><span>Cena netto</span><span>Rabat %</span><span>VAT</span><span></span></div>
+      <div class="items" id="items"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <button class="link" type="button" id="add-item">+ Dodaj pozycję</button>
+        <div class="sumbar"><span>Netto <b id="s-net">0,00</b></span><span>VAT <b id="s-vat">0,00</b></span><span>Brutto <b id="s-gross">0,00</b></span></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Warunki</legend>
+      <div class="row">
+        <label>Płatność<select id="o-pay"><option>Przelew 14 dni</option><option>Przelew 7 dni</option><option>Zaliczka 30%, reszta po odbiorze</option><option>Przedpłata 100%</option></select></label>
+        <label>Gwarancja<select id="o-warr"><option>24 miesiące</option><option>36 miesięcy</option><option>60 miesięcy</option><option>12 miesięcy</option></select></label>
+      </div>
+      <label>Uwagi do oferty<textarea id="o-notes" placeholder="np. Cena obejmuje transport i utylizację starego urządzenia."></textarea></label>
+      <label>Przygotował(a)<input id="o-author" placeholder="Imię i nazwisko, telefon"></label>
+    </fieldset>
+  </form>
+
+  <div class="preview-wrap">
+    <div class="preview-bar"><span>Podgląd A4 – tak wygląda PDF</span><span id="saved"></span></div>
+    <div class="paper-box"><div class="paper" id="paper" aria-label="Podgląd oferty"></div></div>
+  </div>
+</div>
+<p class="demo">Projekt pokazowy – spółki i dane są fikcyjne.</p>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/vfs_fonts.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var COMPANIES = [
+    { id: "inst", short: "Alto Instalacje", name: "Alto Instalacje sp. z o.o.", desc: "pompy ciepła, wentylacja", color: "#1F5FAF", prefix: "AI",
+      addr: "ul. Przykładowa 10, 00-000 Miasto", nip: "000-000-00-00", bank: "PL00 0000 0000 0000 0000 0000 0000", phone: "+48 22 000 00 00", mail: "oferty@alto-instalacje.example" },
+    { id: "pv", short: "Alto Energia", name: "Alto Energia sp. z o.o.", desc: "fotowoltaika, magazyny energii", color: "#2E7D4F", prefix: "AE",
+      addr: "ul. Przykładowa 12, 00-000 Miasto", nip: "000-000-00-11", bank: "PL11 0000 0000 0000 0000 0000 0000", phone: "+48 22 000 00 11", mail: "oferty@alto-energia.example" }
+  ];
+  var VAT = ["23", "8", "5", "0", "zw"];
+  var KEY = "generator-ofert-draft";
+  var $ = function (id) { return document.getElementById(id); };
+  var money = new Intl.NumberFormat("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function zl(n) { return money.format(n) + " zł"; }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function today() { var d = new Date(); return d.toISOString().slice(0, 10); }
+  function plDate(iso) { if (!iso) return ""; var p = iso.split("-"); return p[2] + "." + p[1] + "." + p[0]; }
+  function addDays(iso, n) { var d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + (+n || 0)); return d.toISOString().slice(0, 10); }
+  function r2(n) { return Math.round(n * 100) / 100; }
+
+  /* --- amount in Polish words --- */
+  var J = ["", "jeden", "dwa", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć"];
+  var N = ["dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście"];
+  var D = ["", "", "dwadzieścia", "trzydzieści", "czterdzieści", "pięćdziesiąt", "sześćdziesiąt", "siedemdziesiąt", "osiemdziesiąt", "dziewięćdziesiąt"];
+  var S = ["", "sto", "dwieście", "trzysta", "czterysta", "pięćset", "sześćset", "siedemset", "osiemset", "dziewięćset"];
+  var GROUPS = [["", "", ""], ["tysiąc", "tysiące", "tysięcy"], ["milion", "miliony", "milionów"]];
+  function form(n, f) { if (n === 1) return f[0]; var t = n % 10, h = n % 100; return (t >= 2 && t <= 4 && (h < 12 || h > 14)) ? f[1] : f[2]; }
+  function three(n) { var s = Math.floor(n / 100), d = Math.floor(n % 100 / 10), j = n % 10, out = [S[s]]; if (d === 1) out.push(N[j]); else { out.push(D[d]); out.push(J[j]); } return out.filter(Boolean).join(" "); }
+  function words(n) {
+    if (n === 0) return "zero";
+    var parts = [], g = 0;
+    while (n > 0) { var c = n % 1000; if (c) { var w = (g > 0 && c === 1) ? "" : three(c); parts.unshift((w + " " + (g ? form(c, GROUPS[g]) : "")).trim()); } n = Math.floor(n / 1000); g++; }
+    return parts.join(" ");
+  }
+  function amountWords(x) { var zlote = Math.floor(x + 1e-9), gr = Math.round((x - zlote) * 100); return words(zlote) + " " + form(zlote, ["złoty", "złote", "złotych"]) + " " + String(gr).padStart(2, "0") + "/100"; }
+
+  /* --- state --- */
+  var state;
+  function fresh() {
+    var d = today();
+    return { co: "inst", number: "AI/" + d.slice(0, 4) + "/" + d.slice(5, 7) + "/014", date: d, valid: 14, term: "do 3 tygodni od zamówienia", title: "Montaż pompy ciepła powietrze–woda z instalacją",
+      client: { name: "Przykładowy Klient – dom jednorodzinny", nip: "", address: "ul. Klonowa 5, 00-000 Miasto", contact: "Jan Przykładowy, jan@example.com" },
+      items: [
+        { name: "Pompa ciepła powietrze–woda 8 kW z modułem hydraulicznym", qty: 1, unit: "szt.", price: 24900, disc: 5, vat: "8" },
+        { name: "Zasobnik c.w.u. 250 l ze stali nierdzewnej", qty: 1, unit: "szt.", price: 4200, disc: 0, vat: "8" },
+        { name: "Montaż i uruchomienie z próbą ciśnieniową", qty: 1, unit: "usł.", price: 3800, disc: 0, vat: "8" },
+        { name: "Sterownik internetowy z aplikacją", qty: 1, unit: "szt.", price: 690, disc: 0, vat: "23" }
+      ],
+      pay: "Zaliczka 30%, reszta po odbiorze", warr: "60 miesięcy", notes: "Cena obejmuje transport, montaż oraz utylizację starego kotła.\nPrzed montażem bezpłatna wizja lokalna.", author: "Anna Przykładowa, tel. 600 000 000" };
+  }
+  try { state = JSON.parse(localStorage.getItem(KEY)) || fresh(); } catch (e) { state = fresh(); }
+  function company() { return COMPANIES.filter(function (c) { return c.id === state.co; })[0] || COMPANIES[0]; }
+
+  function lineCalc(it) {
+    var net = r2((+it.qty || 0) * (+it.price || 0) * (1 - (+it.disc || 0) / 100));
+    var rate = it.vat === "zw" ? 0 : (+it.vat || 0) / 100;
+    return { net: net, vat: r2(net * rate), gross: r2(net * (1 + rate)) };
+  }
+  function totals() {
+    var t = { net: 0, vat: 0, gross: 0, byRate: {} };
+    state.items.forEach(function (it) { var c = lineCalc(it); t.net += c.net; t.vat += c.vat; t.gross += c.gross; var k = it.vat; t.byRate[k] = t.byRate[k] || { net: 0, vat: 0 }; t.byRate[k].net += c.net; t.byRate[k].vat += c.vat; });
+    t.net = r2(t.net); t.vat = r2(t.vat); t.gross = r2(t.gross); return t;
+  }
+
+  /* --- form binding --- */
+  var FIELDS = { "o-number": "number", "o-date": "date", "o-valid": "valid", "o-term": "term", "o-title": "title", "o-pay": "pay", "o-warr": "warr", "o-notes": "notes", "o-author": "author" };
+  var CFIELDS = { "c-name": "name", "c-nip": "nip", "c-address": "address", "c-contact": "contact" };
+  function fillForm() {
+    Object.keys(FIELDS).forEach(function (id) { $(id).value = state[FIELDS[id]] == null ? "" : state[FIELDS[id]]; });
+    Object.keys(CFIELDS).forEach(function (id) { $(id).value = state.client[CFIELDS[id]] || ""; });
+    renderCompanies(); renderItems(); update();
+  }
+  Object.keys(FIELDS).forEach(function (id) { $(id).addEventListener("input", function () { state[FIELDS[id]] = $(id).value; update(); }); });
+  Object.keys(CFIELDS).forEach(function (id) { $(id).addEventListener("input", function () { state.client[CFIELDS[id]] = $(id).value; update(); }); });
+
+  function renderCompanies() {
+    $("companies").innerHTML = COMPANIES.map(function (c) {
+      return '<button type="button" class="co" style="--co:' + c.color + '" data-id="' + c.id + '" aria-pressed="' + (c.id === state.co) + '"><b>' + esc(c.short) + '</b><small>' + esc(c.desc) + '</small></button>';
+    }).join("");
+    $("companies").querySelectorAll(".co").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var prev = company(); state.co = b.getAttribute("data-id"); var c = company();
+        if (state.number.indexOf(prev.prefix + "/") === 0) { state.number = c.prefix + state.number.slice(prev.prefix.length); $("o-number").value = state.number; }
+        renderCompanies(); update();
+      });
+    });
+  }
+  function renderItems() {
+    $("items").innerHTML = state.items.map(function (it, i) {
+      return '<div class="item" data-i="' + i + '">' +
+        '<label class="name"><span>Nazwa</span><input data-k="name" value="' + esc(it.name) + '" aria-label="Nazwa pozycji ' + (i + 1) + '"></label>' +
+        '<label><span>Ilość</span><input data-k="qty" type="number" min="0" step="any" value="' + esc(it.qty) + '" aria-label="Ilość"></label>' +
+        '<label><span>J.m.</span><input data-k="unit" value="' + esc(it.unit) + '" aria-label="Jednostka"></label>' +
+        '<label><span>Cena netto</span><input data-k="price" type="number" min="0" step="0.01" value="' + esc(it.price) + '" aria-label="Cena netto"></label>' +
+        '<label><span>Rabat %</span><input data-k="disc" type="number" min="0" max="100" step="any" value="' + esc(it.disc) + '" aria-label="Rabat"></label>' +
+        '<label><span>VAT</span><select data-k="vat" aria-label="Stawka VAT">' + VAT.map(function (v) { return "<option value=\"" + v + "\"" + (v === it.vat ? " selected" : "") + ">" + (v === "zw" ? "zw." : v + "%") + "</option>"; }).join("") + "</select></label>" +
+        '<button class="icon" type="button" data-del aria-label="Usuń pozycję">✕</button></div>';
+    }).join("");
+    $("items").querySelectorAll(".item").forEach(function (row) {
+      var i = +row.getAttribute("data-i");
+      row.querySelectorAll("[data-k]").forEach(function (el) {
+        el.addEventListener("input", function () { var k = el.getAttribute("data-k"); state.items[i][k] = (k === "name" || k === "unit" || k === "vat") ? el.value : el.value === "" ? "" : +el.value; update(); });
+      });
+      row.querySelector("[data-del]").addEventListener("click", function () { state.items.splice(i, 1); renderItems(); update(); });
+    });
+  }
+  $("add-item").addEventListener("click", function () { state.items.push({ name: "", qty: 1, unit: "szt.", price: 0, disc: 0, vat: "23" }); renderItems(); update(); var ins = $("items").querySelectorAll('input[data-k="name"]'); ins[ins.length - 1].focus(); });
+
+  /* --- preview --- */
+  function logoSvg(color) { return '<svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="8" fill="' + color + '"/><path d="M10 29 20 10l10 19" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><path d="M14 22h12" stroke="#fff" stroke-width="3"/></svg>'; }
+  function update() {
+    var c = company(), t = totals();
+    $("s-net").textContent = money.format(t.net); $("s-vat").textContent = money.format(t.vat); $("s-gross").textContent = money.format(t.gross);
+    var rows = state.items.map(function (it, i) { var l = lineCalc(it); return "<tr><td>" + (i + 1) + "</td><td>" + esc(it.name || "—") + (it.disc ? ' <span style="color:#888">(rabat ' + esc(it.disc) + '%)</span>' : "") + '</td><td class="n">' + esc(it.qty) + " " + esc(it.unit) + '</td><td class="n">' + money.format(+it.price || 0) + '</td><td class="n">' + (it.vat === "zw" ? "zw." : esc(it.vat) + "%") + '</td><td class="n">' + money.format(l.net) + '</td><td class="n">' + money.format(l.gross) + "</td></tr>"; }).join("");
+    var rates = Object.keys(t.byRate).map(function (k) { return "<div><span>VAT " + (k === "zw" ? "zw." : k + "%") + " od " + money.format(r2(t.byRate[k].net)) + "</span><span>" + money.format(r2(t.byRate[k].vat)) + "</span></div>"; }).join("");
+    $("paper").style.setProperty("--co", c.color);
+    $("paper").innerHTML =
+      '<div class="p-top"><div class="p-logo">' + logoSvg(c.color) + esc(c.short) + '</div><div class="p-co">' + esc(c.name) + "<br>" + esc(c.addr) + "<br>NIP " + esc(c.nip) + "<br>" + esc(c.phone) + " · " + esc(c.mail) + "</div></div>" +
+      '<div class="p-title"><h2>Oferta</h2><div>nr ' + esc(state.number) + "<br>z dnia " + plDate(state.date) + "<br>ważna do " + plDate(addDays(state.date, state.valid)) + "</div></div>" +
+      (state.title ? '<div style="font-weight:600;font-size:1.1em">' + esc(state.title) + "</div>" : "") +
+      '<div class="p-parties"><div><h4>Dla</h4>' + esc(state.client.name || "—") + "<br>" + esc(state.client.address) + (state.client.nip ? "<br>NIP " + esc(state.client.nip) : "") + "<br>" + esc(state.client.contact) + "</div><div><h4>Warunki</h4>Realizacja: " + esc(state.term || "—") + "<br>Płatność: " + esc(state.pay) + "<br>Gwarancja: " + esc(state.warr) + "</div></div>" +
+      '<table class="p-table"><thead><tr><th>Lp.</th><th>Nazwa</th><th class="n">Ilość</th><th class="n">Cena netto</th><th class="n">VAT</th><th class="n">Netto</th><th class="n">Brutto</th></tr></thead><tbody>' + rows + "</tbody></table>" +
+      '<div class="p-totals"><div><span>Razem netto</span><span>' + money.format(t.net) + "</span></div>" + rates + '<div class="grand"><span>Do zapłaty brutto</span><span>' + zl(t.gross) + "</span></div></div>" +
+      '<div class="p-words">Słownie: ' + esc(amountWords(t.gross)) + "</div>" +
+      (state.notes ? '<div class="p-notes">' + esc(state.notes) + "</div>" : "") +
+      '<div class="p-foot"><span>Przygotował(a): ' + esc(state.author || "—") + "</span><span>" + esc(c.bank) + "</span></div>";
+  }
+
+  /* --- PDF --- */
+  function docDefinition() {
+    var c = company(), t = totals();
+    var body = [[{ text: "Lp.", style: "th" }, { text: "Nazwa", style: "th" }, { text: "Ilość", style: "th", alignment: "right" }, { text: "Cena netto", style: "th", alignment: "right" }, { text: "VAT", style: "th", alignment: "right" }, { text: "Netto", style: "th", alignment: "right" }, { text: "Brutto", style: "th", alignment: "right" }]];
+    state.items.forEach(function (it, i) {
+      var l = lineCalc(it);
+      body.push([String(i + 1), { text: [it.name || "—", it.disc ? { text: " (rabat " + it.disc + "%)", color: "#888888" } : ""] }, { text: it.qty + " " + it.unit, alignment: "right" }, { text: money.format(+it.price || 0), alignment: "right" }, { text: it.vat === "zw" ? "zw." : it.vat + "%", alignment: "right" }, { text: money.format(l.net), alignment: "right" }, { text: money.format(l.gross), alignment: "right" }]);
+    });
+    var sums = [[{ text: "Razem netto" }, { text: money.format(t.net), alignment: "right" }]];
+    Object.keys(t.byRate).forEach(function (k) { sums.push([{ text: "VAT " + (k === "zw" ? "zw." : k + "%") + " od " + money.format(r2(t.byRate[k].net)) }, { text: money.format(r2(t.byRate[k].vat)), alignment: "right" }]); });
+    sums.push([{ text: "Do zapłaty brutto", bold: true, fontSize: 12 }, { text: zl(t.gross), bold: true, fontSize: 12, alignment: "right" }]);
+    return {
+      pageSize: "A4", pageMargins: [40, 40, 40, 56],
+      info: { title: "Oferta " + state.number, author: c.name },
+      footer: function (p, n) { return { columns: [{ text: "Przygotował(a): " + (state.author || "—"), fontSize: 8, color: "#777777" }, { text: c.bank + "   ·   strona " + p + "/" + n, fontSize: 8, color: "#777777", alignment: "right" }], margin: [40, 16, 40, 0] }; },
+      content: [
+        { columns: [
+          { width: "*", columns: [{ svg: logoSvg(c.color).replace(' aria-hidden="true"', ""), width: 30 }, { text: c.short, fontSize: 16, bold: true, color: c.color, margin: [8, 6, 0, 0] }] },
+          { width: "auto", text: [c.name + "\n", c.addr + "\n", "NIP " + c.nip + "\n", c.phone + " · " + c.mail], fontSize: 8.5, color: "#555555", alignment: "right" }
+        ] },
+        { canvas: [{ type: "line", x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 2, lineColor: c.color }], margin: [0, 18, 0, 6] },
+        { columns: [{ text: "Oferta", fontSize: 22, bold: true }, { text: "nr " + state.number + "\nz dnia " + plDate(state.date) + "\nważna do " + plDate(addDays(state.date, state.valid)), alignment: "right", fontSize: 9, color: "#555555" }] },
+        state.title ? { text: state.title, bold: true, fontSize: 12, margin: [0, 10, 0, 0] } : {},
+        { columns: [
+          { stack: [{ text: "DLA", fontSize: 8, color: "#888888", characterSpacing: 1 }, { text: [state.client.name || "—", "\n", state.client.address || "", state.client.nip ? "\nNIP " + state.client.nip : "", "\n", state.client.contact || ""], fontSize: 10 }] },
+          { stack: [{ text: "WARUNKI", fontSize: 8, color: "#888888", characterSpacing: 1 }, { text: "Realizacja: " + (state.term || "—") + "\nPłatność: " + state.pay + "\nGwarancja: " + state.warr, fontSize: 10 }] }
+        ], columnGap: 20, margin: [0, 14, 0, 14] },
+        { table: { headerRows: 1, widths: [18, "*", 48, 62, 30, 62, 62], body: body }, layout: { fillColor: function (r) { return r === 0 ? c.color : null; }, hLineColor: function () { return "#E6E6E6"; }, vLineWidth: function () { return 0; }, paddingTop: function () { return 4; }, paddingBottom: function () { return 4; } }, fontSize: 9 },
+        { columns: [{ width: "*", text: "" }, { width: 250, table: { widths: ["*", "auto"], body: sums }, layout: "noBorders", fontSize: 10, margin: [0, 12, 0, 0] }] },
+        { text: "Słownie: " + amountWords(t.gross), fontSize: 9, color: "#444444", margin: [0, 8, 0, 0] },
+        state.notes ? { text: state.notes, fontSize: 9.5, margin: [0, 14, 0, 0] } : {}
+      ],
+      styles: { th: { color: "#FFFFFF", bold: true, fontSize: 8 } },
+      defaultStyle: { font: "Roboto", fontSize: 10, color: "#222222" }
+    };
+  }
+  function fileName() { return "Oferta_" + state.number.replace(/[^\w-]+/g, "_") + ".pdf"; }
+  $("btn-pdf").addEventListener("click", function () {
+    if (!window.pdfMake) { toast("Nie udało się wczytać modułu PDF. Sprawdź połączenie i odśwież stronę."); return; }
+    try { window.pdfMake.createPdf(docDefinition()).download(fileName()); toast("Pobieranie: " + fileName()); }
+    catch (e) { toast("Nie udało się utworzyć PDF: " + e.message); }
+  });
+  window.__pdfBase64 = function () { return new Promise(function (res) { window.pdfMake.createPdf(docDefinition()).getBase64(res); }); };
+
+  /* --- drafts --- */
+  function toast(msg) { var t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(function () { t.hidden = true; }, 2600); }
+  $("btn-save").addEventListener("click", function () { try { localStorage.setItem(KEY, JSON.stringify(state)); $("saved").textContent = "Szkic zapisany " + new Date().toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" }); toast("Szkic zapisany w tej przeglądarce"); } catch (e) { toast("Przeglądarka nie pozwala zapisać szkicu"); } });
+  $("btn-new").addEventListener("click", function () {
+    var c = company(), n = fresh(); n.co = c.id; n.number = c.prefix + n.number.slice(2).replace(/\d+$/, function (x) { return String(+x + 1).padStart(3, "0"); });
+    n.title = ""; n.client = { name: "", nip: "", address: "", contact: "" }; n.items = [{ name: "", qty: 1, unit: "szt.", price: 0, disc: 0, vat: "23" }]; n.notes = "";
+    state = n; fillForm(); toast("Nowa oferta – uzupełnij dane");
+  });
+
+  fillForm();
+})();
+</script>
+</body>
+</html>

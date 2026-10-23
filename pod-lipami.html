@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pod Lipami – mieszkania w Łodzi</title>
+<meta name="description" content="Kameralny budynek Pod Lipami w Łodzi: 24 mieszkania 31–75 m² z ogródkami i balkonami. Wybierz mieszkanie na elewacji albo w wyszukiwarce.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Archivo:wght@400;500;600&display=swap">
+<style>
+/* Layout: developer microsite — hero with clickable elevation, finder (filters + list), location, standard, schedule, contact. */
+:root {
+  --ink: #1C221E;
+  --text: #2E3630;
+  --muted: #646D66;
+  --green: #4E6A2E;
+  --green-dark: #3B5222;
+  --leaf: #DDE7CD;
+  --stone: #F1F2ED;
+  --surface: #FFFFFF;
+  --line: #D9DDD2;
+  --free: #3F7D3A; --free-soft: #E1EFDC;
+  --res: #A06A00; --res-soft: #FCEFCF;
+  --sold: #8A8F8B; --sold-soft: #E9EAE7;
+  --display: "Syne", "Archivo", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body { margin: 0; background: var(--stone); color: var(--text); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 1200px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); color: var(--ink); margin: 0; line-height: 1.05; text-wrap: balance; }
+h1 { font-size: clamp(44px, 7vw, 92px); font-weight: 800; letter-spacing: -0.03em; }
+h2 { font-size: clamp(30px, 4vw, 48px); font-weight: 700; letter-spacing: -0.02em; }
+h3 { font-size: 20px; font-weight: 700; }
+p { margin: 0; }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--green); }
+:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 22px; border-radius: 4px; font: 600 15px var(--body); text-decoration: none; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: #fff; }
+.btn:hover { background: var(--green-dark); border-color: var(--green-dark); }
+.btn.light { background: transparent; color: var(--ink); }
+.btn.light:hover { background: var(--leaf); }
+
+header.top { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 30; }
+header.top .wrap { display: flex; align-items: center; gap: 24px; padding-block: 14px; }
+.brand { font-family: var(--display); font-weight: 800; font-size: 20px; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.brand svg { flex: none; }
+nav.menu { margin-left: auto; display: flex; gap: 24px; }
+nav.menu a { color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px; }
+nav.menu a:hover { color: var(--green); }
+@media (max-width: 860px) { nav.menu { display: none; } header.top .btn { margin-left: auto; padding: 10px 14px; } }
+.brand { white-space: nowrap; }
+@media (max-width: 480px) { header.top .btn { font-size: 13px; padding: 9px 11px; } .brand { font-size: 18px; } }
+
+.hero { padding-block: 56px 40px; }
+.hero .wrap { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: end; }
+.hero-copy { display: grid; gap: 22px; min-width: 0; }
+.hero-copy .lead { font-size: 19px; color: var(--muted); max-width: 46ch; }
+.stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+.stat { padding: 14px 0; border-bottom: 1px solid var(--line); display: grid; gap: 2px; }
+.stat:nth-child(odd) { padding-right: 16px; border-right: 1px solid var(--line); }
+.stat:nth-child(even) { padding-left: 16px; }
+.stat b { font-family: var(--display); font-size: 26px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13px; color: var(--muted); }
+.elev { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px; display: grid; gap: 12px; min-width: 0; }
+.elev-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.elev-head span { font-size: 13px; color: var(--muted); }
+.elev svg { width: 100%; height: auto; display: block; }
+.elev .floor { cursor: pointer; }
+.elev .floor rect.hit { fill: transparent; }
+.elev .floor:hover rect.hit, .elev .floor.active rect.hit { fill: rgba(78,106,46,.10); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+@media (max-width: 900px) { .hero .wrap { grid-template-columns: 1fr; } }
+
+section { padding-block: 72px; }
+.head { display: grid; gap: 12px; margin-bottom: 32px; max-width: 720px; }
+.head p { color: var(--muted); font-size: 17px; }
+
+/* finder */
+#mieszkania { background: var(--surface); border-block: 1px solid var(--line); }
+.filters { display: grid; grid-template-columns: auto auto 1fr 1fr auto; gap: 16px 20px; align-items: end; padding: 18px; background: var(--stone); border: 1px solid var(--line); border-radius: 6px; margin-bottom: 18px; }
+.fgroup { display: grid; gap: 6px; min-width: 0; }
+.fgroup > label, .fgroup > span { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chips button { font: 600 14px var(--body); padding: 8px 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; min-width: 40px; }
+.chips button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+select, input { font: 15px var(--body); padding: 9px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--text); width: 100%; min-width: 0; }
+.range { display: flex; gap: 8px; align-items: center; }
+.toggle { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--text); white-space: nowrap; }
+.toggle input { width: auto; }
+@media (max-width: 1000px) { .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .filters { grid-template-columns: 1fr; } }
+.resbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; font-size: 14px; color: var(--muted); }
+.resbar b { color: var(--ink); }
+.tablebox { overflow-x: auto; }
+table.units { width: 100%; border-collapse: collapse; font-size: 15px; }
+.units th { text-align: left; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 10px 12px; border-bottom: 2px solid var(--ink); white-space: nowrap; }
+.units td { padding: 14px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.units tr.row { cursor: pointer; }
+.units tr.row:hover td { background: var(--stone); }
+.units td.nr { font-weight: 600; color: var(--ink); font-size: 16px; }
+.units .num { text-align: right; }
+.st { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+.st.free { background: var(--free-soft); color: var(--free); }
+.st.res { background: var(--res-soft); color: var(--res); }
+.st.sold { background: var(--sold-soft); color: var(--sold); }
+.units tr.is-sold td { color: var(--sold); }
+.units .plan-btn { font: 600 13px var(--body); color: var(--green-dark); background: none; border: 1px solid var(--line); border-radius: 4px; padding: 6px 10px; cursor: pointer; }
+.empty { padding: 36px 12px; text-align: center; color: var(--muted); }
+@media (max-width: 720px) {
+  .units thead { display: none; }
+  .units, .units tbody, .units tr, .units td { display: block; width: 100%; }
+  .units tr.row { border: 1px solid var(--line); border-radius: 6px; margin-bottom: 10px; padding: 12px 14px; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; }
+  .units td { border: 0; padding: 0; white-space: normal; }
+  .units td[data-l]::before { content: attr(data-l) ": "; color: var(--muted); font-size: 13px; }
+  .units td.nr { grid-column: 1; }
+  .units td.stc { grid-column: 2; grid-row: 1; text-align: right; }
+  .units td.num { text-align: left; }
+  .units td.act { grid-column: 1 / -1; margin-top: 6px; }
+}
+
+/* dialog */
+dialog { border: 0; border-radius: 8px; padding: 0; max-width: min(860px, calc(100vw - 24px)); width: 100%; box-shadow: 0 30px 80px -30px rgba(0,0,0,.5); color: var(--text); }
+dialog::backdrop { background: rgba(28,34,30,.55); }
+.dlg { display: grid; grid-template-columns: 1.2fr .8fr; }
+.dlg .plan { background: var(--stone); padding: 24px; min-width: 0; }
+.dlg .meta { padding: 24px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.dlg dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 15px; }
+.dlg dt { color: var(--muted); }
+.dlg dd { margin: 0; font-weight: 600; color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
+.rooms-list { font-size: 14px; color: var(--muted); display: grid; gap: 2px; }
+.rooms-list div { display: flex; justify-content: space-between; }
+.close { position: absolute; right: 10px; top: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 50%; width: 36px; height: 36px; font-size: 20px; cursor: pointer; }
+@media (max-width: 720px) { .dlg { grid-template-columns: 1fr; } }
+
+/* location */
+.loc { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.dist { list-style: none; padding: 0; margin: 0; display: grid; }
+.dist li { display: flex; justify-content: space-between; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.dist b { font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+.mapbox { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+@media (max-width: 860px) { .loc { grid-template-columns: 1fr; } }
+
+/* standard */
+.std { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+.std article { padding: 22px 22px 22px 0; border-bottom: 1px solid var(--line); display: grid; gap: 8px; align-content: start; }
+.std p { color: var(--muted); }
+@media (max-width: 860px) { .std { grid-template-columns: 1fr; } }
+
+/* schedule */
+.timeline { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding-top: 28px; }
+.timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 9px; height: 2px; background: var(--line); }
+.timeline .progress { position: absolute; left: 0; top: 9px; height: 2px; background: var(--green); width: 40%; }
+.ms { position: relative; display: grid; gap: 4px; }
+.ms::before { content: ""; position: absolute; top: -26px; left: 0; width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 2px solid var(--line); }
+.ms.done::before { background: var(--green); border-color: var(--green); }
+.ms.now::before { background: var(--surface); border-color: var(--green); box-shadow: 0 0 0 4px var(--leaf); }
+.ms b { font-family: var(--display); font-size: 17px; color: var(--ink); }
+.ms span { font-size: 14px; color: var(--muted); }
+@media (max-width: 760px) {
+  .timeline { grid-template-columns: 1fr; padding-top: 0; padding-left: 28px; }
+  .timeline::before { left: 7px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; }
+  .timeline .progress { left: 7px; top: 0; width: 2px; height: 40%; }
+  .ms::before { top: 2px; left: -28px; }
+}
+
+/* contact */
+#kontakt { background: var(--ink); color: #D3D8D2; }
+#kontakt h2 { color: #fff; }
+#kontakt .eyebrow { color: #B9CF95; }
+.contact { display: grid; grid-template-columns: .9fr 1.1fr; gap: 40px; }
+.contact dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 18px; }
+.contact dt { color: #9DA59E; }
+.contact dd { margin: 0; color: #fff; font-weight: 500; }
+form.ask { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+form.ask label { display: grid; gap: 6px; font-size: 13px; font-weight: 600; color: #B8C0B9; }
+form.ask .full { grid-column: 1 / -1; }
+form.ask input, form.ask select, form.ask textarea { background: #262E28; border-color: #3A443C; color: #fff; font: 15px var(--body); padding: 11px 12px; border-radius: 4px; border: 1px solid #3A443C; width: 100%; }
+form.ask .btn { background: #B9CF95; color: var(--ink); border-color: #B9CF95; }
+.thanks { grid-column: 1 / -1; color: #B9CF95; font-weight: 600; }
+@media (max-width: 860px) { .contact { grid-template-columns: 1fr; } form.ask { grid-template-columns: 1fr; } }
+footer { background: var(--ink); color: #8D958E; font-size: 13px; padding-block: 0 28px; }
+footer .wrap { border-top: 1px solid #333C35; padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="4" fill="#1C221E"/><path d="M16 5c-5 4-7.5 8.3-7.5 12.2A7.5 7.5 0 0 0 16 24.7a7.5 7.5 0 0 0 7.5-7.5C23.5 13.3 21 9 16 5Z" fill="#B9CF95"/><path d="M16 11v17" stroke="#1C221E" stroke-width="1.8"/><path d="M16 17l-3.5-3M16 20.5l4-3.6" stroke="#1C221E" stroke-width="1.6" stroke-linecap="round"/></svg>
+      Pod Lipami
+    </a>
+    <nav class="menu" aria-label="Menu">
+      <a href="#mieszkania">Mieszkania</a>
+      <a href="#lokalizacja">Lokalizacja</a>
+      <a href="#standard">Standard</a>
+      <a href="#harmonogram">Harmonogram</a>
+    </nav>
+    <a class="btn" href="#kontakt">Umów prezentację</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow">Łódź · Polesie · etap I</span>
+        <h1>Pod Lipami</h1>
+        <p class="lead">Kameralny, czterokondygnacyjny budynek przy parku. 24 mieszkania z ogródkami na parterze i balkonami od strony zieleni.</p>
+        <div class="stats">
+          <div class="stat"><b id="s-free">–</b><span>wolnych z 24 mieszkań</span></div>
+          <div class="stat"><b>31–75 m²</b><span>1 do 4 pokoi</span></div>
+          <div class="stat"><b id="s-from">–</b><span>cena za m² od</span></div>
+          <div class="stat"><b>IV kw. 2027</b><span>planowane oddanie</span></div>
+        </div>
+      </div>
+      <div class="elev">
+        <div class="elev-head"><h3>Wybierz piętro na elewacji</h3><span id="elev-hint">Kliknij piętro, żeby zobaczyć jego mieszkania</span></div>
+        <svg viewBox="0 0 620 380" id="elevation" role="group" aria-label="Elewacja budynku z piętrami"></svg>
+        <div class="legend"><span><i style="background:var(--free)"></i>wolne</span><span><i style="background:var(--res)"></i>rezerwacja</span><span><i style="background:var(--sold)"></i>sprzedane</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mieszkania">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Wyszukiwarka</span>
+        <h2>Mieszkania</h2>
+        <p>Filtruj po liczbie pokoi, piętrze, metrażu i cenie. Kliknij mieszkanie, żeby zobaczyć rzut i rozkład pomieszczeń.</p>
+      </div>
+      <div class="filters" role="search">
+        <div class="fgroup"><span>Pokoje</span><div class="chips" id="f-rooms"><button type="button" data-v="1" aria-pressed="false">1</button><button type="button" data-v="2" aria-pressed="false">2</button><button type="button" data-v="3" aria-pressed="false">3</button><button type="button" data-v="4" aria-pressed="false">4</button></div></div>
+        <div class="fgroup"><label for="f-floor">Piętro</label><select id="f-floor"><option value="">Wszystkie</option><option value="0">Parter</option><option value="1">1. piętro</option><option value="2">2. piętro</option><option value="3">3. piętro</option></select></div>
+        <div class="fgroup"><span>Metraż (m²)</span><div class="range"><input id="f-amin" type="number" inputmode="numeric" placeholder="od" aria-label="Metraż od"><span>–</span><input id="f-amax" type="number" inputmode="numeric" placeholder="do" aria-label="Metraż do"></div></div>
+        <div class="fgroup"><label for="f-pmax">Cena maks. (zł)</label><input id="f-pmax" type="number" inputmode="numeric" step="10000" placeholder="np. 600 000"></div>
+        <div class="fgroup"><label class="toggle"><input type="checkbox" id="f-free"> Tylko wolne</label><label for="f-sort" class="sr" style="position:absolute;left:-9999px">Sortuj</label><select id="f-sort"><option value="nr">Sortuj: numer</option><option value="price">Cena rosnąco</option><option value="area">Metraż rosnąco</option><option value="ppm">Cena za m² rosnąco</option></select></div>
+      </div>
+      <div class="resbar"><span>Znaleziono <b id="count">0</b> mieszkań</span><button class="btn light" type="button" id="reset" style="padding:7px 12px">Wyczyść filtry</button></div>
+      <div class="tablebox">
+        <table class="units">
+          <thead><tr><th>Nr</th><th>Piętro</th><th>Pokoje</th><th class="num">Metraż</th><th>Dodatkowo</th><th class="num">Cena</th><th class="num">Cena / m²</th><th>Status</th><th></th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="lokalizacja">
+    <div class="wrap loc">
+      <div>
+        <div class="head"><span class="eyebrow">Lokalizacja</span><h2>Park za oknem, centrum w 12 minut</h2><p>Spokojna ulica jednokierunkowa na Polesiu, przy parku i przystanku tramwajowym.</p></div>
+        <ul class="dist">
+          <li><span>Park z placem zabaw</span><b>3 min pieszo</b></li>
+          <li><span>Przystanek tramwajowy</span><b>4 min pieszo</b></li>
+          <li><span>Szkoła podstawowa i przedszkole</span><b>7 min pieszo</b></li>
+          <li><span>Supermarket</span><b>5 min pieszo</b></li>
+          <li><span>Centrum (ul. Piotrkowska)</span><b>12 min tramwajem</b></li>
+          <li><span>Dworzec Łódź Fabryczna</span><b>18 min tramwajem</b></li>
+        </ul>
+      </div>
+      <div class="mapbox" role="img" aria-label="Schemat okolicy: budynek przy parku, tramwaj i szkoła">
+        <svg viewBox="0 0 520 440" width="100%">
+          <rect width="520" height="440" fill="#F1F2ED"/>
+          <rect x="250" y="40" width="240" height="190" rx="8" fill="#DDE7CD"/>
+          <g fill="#B9CF95"><circle cx="300" cy="90" r="16"/><circle cx="350" cy="130" r="22"/><circle cx="420" cy="80" r="18"/><circle cx="440" cy="170" r="20"/><circle cx="310" cy="180" r="14"/></g>
+          <text x="370" y="215" text-anchor="middle" font-family="Archivo, sans-serif" font-size="14" fill="#3B5222">park</text>
+          <g stroke="#FFFFFF" stroke-width="18"><path d="M0 260H520"/><path d="M220 0V440"/></g>
+          <path d="M0 268H520" stroke="#4E6A2E" stroke-width="3" stroke-dasharray="10 6"/>
+          <text x="40" y="294" font-family="Archivo, sans-serif" font-size="13" fill="#646D66">linia tramwajowa</text>
+          <rect x="120" y="120" width="80" height="110" rx="4" fill="#1C221E"/>
+          <text x="160" y="110" text-anchor="middle" font-family="Syne, sans-serif" font-weight="700" font-size="15" fill="#1C221E">Pod Lipami</text>
+          <circle cx="232" cy="250" r="9" fill="#FFFFFF" stroke="#4E6A2E" stroke-width="3"/>
+          <rect x="270" y="300" width="130" height="90" rx="6" fill="#E3E5DE"/>
+          <text x="335" y="350" text-anchor="middle" font-family="Archivo, sans-serif" font-size="13" fill="#646D66">szkoła</text>
+          <rect x="30" y="320" width="150" height="80" rx="6" fill="#E3E5DE"/>
+          <text x="105" y="365" text-anchor="middle" font-family="Archivo, sans-serif" font-size="13" fill="#646D66">sklep</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="standard" style="padding-top: 0">
+    <div class="wrap">
+      <div class="head"><span class="eyebrow">Standard</span><h2>Co dostajesz w cenie</h2></div>
+      <div class="std">
+        <article><h3>Okna trzyszybowe</h3><p>Pakiet 3-szybowy, Uw ≤ 0,9 W/m²K. Rolety zewnętrzne na 3. piętrze.</p></article>
+        <article><h3>Ogrzewanie podłogowe</h3><p>Pompa ciepła i ogrzewanie podłogowe we wszystkich pomieszczeniach poza łazienką.</p></article>
+        <article><h3>Komórki i rowery</h3><p>Komórka lokatorska dla każdego mieszkania i rowerownia w budynku.</p></article>
+        <article><h3>Hala garażowa</h3><p>18 miejsc w hali i 8 naziemnych. Przygotowanie pod ładowarki aut elektrycznych.</p></article>
+        <article><h3>Ogródki na parterze</h3><p>Od 24 do 61 m², z hydrantem ogrodowym i oświetleniem.</p></article>
+        <article><h3>Wykończenie pod klucz</h3><p>Opcjonalnie: trzy pakiety wykończenia z kosztorysem przed podpisaniem umowy.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="harmonogram" style="padding-top: 0">
+    <div class="wrap">
+      <div class="head"><span class="eyebrow">Harmonogram</span><h2>Budowa idzie zgodnie z planem</h2></div>
+      <div class="timeline">
+        <div class="progress" aria-hidden="true"></div>
+        <div class="ms done"><b>II kw. 2026</b><span>Pozwolenie na budowę i start prac</span></div>
+        <div class="ms now"><b>IV kw. 2026</b><span>Stan surowy otwarty (trwa)</span></div>
+        <div class="ms"><b>II kw. 2027</b><span>Stan surowy zamknięty, instalacje</span></div>
+        <div class="ms"><b>IV kw. 2027</b><span>Pozwolenie na użytkowanie i odbiory</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt">
+    <div class="wrap contact">
+      <div style="display:grid;gap:20px;align-content:start">
+        <span class="eyebrow">Biuro sprzedaży</span>
+        <h2>Zapytaj o mieszkanie</h2>
+        <dl><dt>Telefon</dt><dd>42 000 00 00</dd><dt>E-mail</dt><dd>sprzedaz@podlipami.example</dd><dt>Biuro</dt><dd>pon–pt 9–18, sob 10–14</dd></dl>
+      </div>
+      <form class="ask" id="ask" novalidate>
+        <label>Imię<input id="a-name" autocomplete="given-name"></label>
+        <label>Telefon lub e-mail<input id="a-contact"></label>
+        <label class="full">Mieszkanie<select id="a-unit"><option value="">Nie wybrałem jeszcze mieszkania</option></select></label>
+        <label class="full">Pytanie<textarea id="a-msg" rows="3" placeholder="Np. termin prezentacji, kredyt, wykończenie"></textarea></label>
+        <div class="full"><button class="btn" type="submit">Wyślij zapytanie</button></div>
+        <p class="thanks" id="a-ok" hidden>Dziękujemy! Doradca odezwie się w ciągu dnia roboczego. (Wersja demonstracyjna – dane nie są wysyłane).</p>
+      </form>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span>© Pod Lipami, etap I</span><span>Projekt pokazowy – inwestycja, ceny i dane są fikcyjne.</span></div></footer>
+
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <div style="position:relative">
+    <button class="close" type="button" id="dlg-close" aria-label="Zamknij">×</button>
+    <div class="dlg">
+      <div class="plan"><svg id="plan" viewBox="0 0 400 300" width="100%" role="img" aria-label="Rzut mieszkania"></svg></div>
+      <div class="meta">
+        <span class="eyebrow" id="dlg-eyebrow"></span>
+        <h2 id="dlg-title" style="font-size:30px;font-family:var(--body);font-weight:600;letter-spacing:-0.01em"></h2>
+        <dl id="dlg-dl"></dl>
+        <div class="rooms-list" id="dlg-rooms"></div>
+        <a class="btn" href="#kontakt" id="dlg-ask">Zapytaj o to mieszkanie</a>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  "use strict";
+  var FLOORS = ["Parter", "1. piętro", "2. piętro", "3. piętro"];
+  var BASE = [{ r: 2, a: 42.6 }, { r: 3, a: 58.3 }, { r: 1, a: 31.2 }, { r: 2, a: 45.9 }, { r: 3, a: 61.4 }, { r: 4, a: 74.8 }];
+  var STATUS = "FFSFRFFFFSFRFSFFFFRFFSFF".split(""); // F wolne, R rezerwacja, S sprzedane
+  var units = [];
+  for (var f = 0; f < 4; f++) {
+    for (var i = 0; i < 6; i++) {
+      var b = BASE[i];
+      var area = Math.round((b.a + (f === 3 && i === 5 ? 0 : (i % 2 ? -0.4 : 0.3) * f)) * 10) / 10;
+      var ppm = 9650 + f * 260 + (b.r === 1 ? 600 : 0) + (i === 5 ? 180 : 0);
+      var price = Math.round(area * ppm / 1000) * 1000;
+      var extra = f === 0 ? "ogródek " + [38, 24, 26, 31, 44, 61][i] + " m²" : (f === 3 && i === 5 ? "taras 18 m²" : "balkon " + [5.2, 6.8, 3.9, 5.4, 7.1, 8.6][i].toFixed(1).replace(".", ",") + " m²");
+      var st = { F: "free", R: "res", S: "sold" }[STATUS[f * 6 + i]];
+      units.push({ nr: "A." + f + "." + (i + 1), floor: f, rooms: b.r, area: area, price: price, ppm: Math.round(price / area), extra: extra, st: st, idx: i });
+    }
+  }
+  var ST_LABEL = { free: "wolne", res: "rezerwacja", sold: "sprzedane" };
+  var nf = new Intl.NumberFormat("pl-PL");
+  function zl(n) { return nf.format(n) + " zł"; }
+  function m2(n) { return n.toFixed(1).replace(".", ",") + " m²"; }
+
+  var free = units.filter(function (u) { return u.st === "free"; });
+  document.getElementById("s-free").textContent = free.length;
+  document.getElementById("s-from").textContent = nf.format(Math.min.apply(null, units.map(function (u) { return u.ppm; }))) + " zł";
+
+  /* filters */
+  var state = { rooms: [], floor: "", amin: "", amax: "", pmax: "", onlyFree: false, sort: "nr" };
+  var $ = function (id) { return document.getElementById(id); };
+  document.querySelectorAll("#f-rooms button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var v = +btn.getAttribute("data-v"); var k = state.rooms.indexOf(v);
+      if (k >= 0) state.rooms.splice(k, 1); else state.rooms.push(v);
+      btn.setAttribute("aria-pressed", k < 0 ? "true" : "false"); render();
+    });
+  });
+  [["f-floor", "floor"], ["f-amin", "amin"], ["f-amax", "amax"], ["f-pmax", "pmax"], ["f-sort", "sort"]].forEach(function (p) {
+    $(p[0]).addEventListener("input", function () { state[p[1]] = $(p[0]).value; render(); });
+  });
+  $("f-free").addEventListener("change", function () { state.onlyFree = $("f-free").checked; render(); });
+  $("reset").addEventListener("click", function () {
+    state = { rooms: [], floor: "", amin: "", amax: "", pmax: "", onlyFree: false, sort: "nr" };
+    ["f-floor", "f-amin", "f-amax", "f-pmax"].forEach(function (id) { $(id).value = ""; }); $("f-sort").value = "nr"; $("f-free").checked = false;
+    document.querySelectorAll("#f-rooms button").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+    render();
+  });
+
+  function filtered() {
+    var list = units.filter(function (u) {
+      if (state.rooms.length && state.rooms.indexOf(u.rooms) < 0) return false;
+      if (state.floor !== "" && u.floor !== +state.floor) return false;
+      if (state.amin && u.area < +state.amin) return false;
+      if (state.amax && u.area > +state.amax) return false;
+      if (state.pmax && u.price > +state.pmax) return false;
+      if (state.onlyFree && u.st !== "free") return false;
+      return true;
+    });
+    var key = state.sort;
+    list.sort(function (a, b) { return key === "nr" ? (a.floor - b.floor || a.idx - b.idx) : a[key] - b[key]; });
+    return list;
+  }
+
+  function render() {
+    var list = filtered();
+    $("count").textContent = list.length;
+    var tb = $("rows");
+    if (!list.length) { tb.innerHTML = '<tr><td colspan="9" class="empty">Brak mieszkań dla tych filtrów. Poszerz metraż albo cenę.</td></tr>'; }
+    else tb.innerHTML = list.map(function (u) {
+      return '<tr class="row' + (u.st === "sold" ? " is-sold" : "") + '" data-nr="' + u.nr + '" tabindex="0">' +
+        '<td class="nr">' + u.nr + '</td><td data-l="Piętro">' + FLOORS[u.floor] + '</td><td data-l="Pokoje">' + u.rooms + '</td>' +
+        '<td class="num" data-l="Metraż">' + m2(u.area) + '</td><td data-l="Dodatkowo">' + u.extra + '</td>' +
+        '<td class="num" data-l="Cena">' + (u.st === "sold" ? "–" : zl(u.price)) + '</td><td class="num" data-l="Za m²">' + (u.st === "sold" ? "–" : zl(u.ppm)) + '</td>' +
+        '<td class="stc"><span class="st ' + u.st + '">' + ST_LABEL[u.st] + '</span></td><td class="act"><button class="plan-btn" type="button">Rzut i szczegóły</button></td></tr>';
+    }).join("");
+    tb.querySelectorAll("tr.row").forEach(function (tr) {
+      var open = function () { openUnit(tr.getAttribute("data-nr")); };
+      tr.addEventListener("click", open);
+      tr.addEventListener("keydown", function (e) { if (e.key === "Enter") open(); });
+    });
+    drawElevation();
+  }
+
+  /* elevation */
+  function drawElevation() {
+    var svg = $("elevation"); var W = 620, top = 40, fh = 70, x0 = 70, bw = 480;
+    var s = '<rect x="0" y="0" width="620" height="380" fill="#FFFFFF"/>';
+    s += '<g fill="#B9CF95"><circle cx="30" cy="300" r="34"/><circle cx="592" cy="285" r="40"/><circle cx="48" cy="250" r="26"/></g>';
+    s += '<rect x="' + (x0 - 10) + '" y="' + (top - 14) + '" width="' + (bw + 20) + '" height="14" fill="#1C221E"/>';
+    for (var f = 3; f >= 0; f--) {
+      var y = top + (3 - f) * fh;
+      var active = state.floor !== "" && +state.floor === f;
+      s += '<g class="floor' + (active ? " active" : "") + '" data-f="' + f + '" role="button" tabindex="0" aria-label="' + FLOORS[f] + '">';
+      s += '<rect x="' + x0 + '" y="' + y + '" width="' + bw + '" height="' + fh + '" fill="#E9E6DD" stroke="#CFCBBE"/>';
+      for (var i = 0; i < 6; i++) {
+        var u = units[f * 6 + i];
+        var col = { free: "#3F7D3A", res: "#A06A00", sold: "#8A8F8B" }[u.st];
+        var wx = x0 + 18 + i * 77;
+        s += '<rect x="' + wx + '" y="' + (y + 14) + '" width="52" height="40" rx="2" fill="' + col + '" opacity="' + (u.st === "sold" ? .45 : .9) + '"/>';
+        s += '<rect x="' + (wx + 25) + '" y="' + (y + 14) + '" width="2" height="40" fill="#FFFFFF" opacity=".6"/>';
+        if (f > 0) s += '<rect x="' + (wx - 4) + '" y="' + (y + 54) + '" width="60" height="5" fill="#1C221E" opacity=".75"/>';
+      }
+      s += '<text x="' + (x0 - 14) + '" y="' + (y + fh / 2 + 5) + '" text-anchor="end" font-family="Archivo, sans-serif" font-size="13" fill="#646D66">' + (f === 0 ? "P" : f) + '</text>';
+      s += '<rect class="hit" x="' + x0 + '" y="' + y + '" width="' + bw + '" height="' + fh + '"/></g>';
+    }
+    s += '<rect x="0" y="' + (top + 4 * fh) + '" width="' + W + '" height="60" fill="#DDE7CD"/>';
+    s += '<rect x="' + (x0 + 210) + '" y="' + (top + 4 * fh - 52) + '" width="60" height="52" fill="#1C221E"/>';
+    svg.innerHTML = s;
+    svg.querySelectorAll(".floor").forEach(function (g) {
+      var pick = function () { var f = g.getAttribute("data-f"); state.floor = state.floor === f ? "" : f; $("f-floor").value = state.floor; render(); };
+      g.addEventListener("click", pick);
+      g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+    });
+  }
+
+  /* plan + dialog */
+  function rooms(u) {
+    var a = u.area, out = [];
+    var bath = u.rooms >= 3 ? 5.6 : 4.4, hall = u.rooms >= 3 ? 6.8 : 5.2, wc = u.rooms === 4 ? 1.8 : 0;
+    var rest = a - bath - hall - wc;
+    if (u.rooms === 1) out.push(["Pokój z aneksem", rest]);
+    else {
+      var living = rest * (u.rooms === 2 ? .58 : u.rooms === 3 ? .45 : .38);
+      out.push(["Salon z aneksem", living]);
+      var bedr = (rest - living) / (u.rooms - 1);
+      for (var k = 1; k < u.rooms; k++) out.push([k === 1 ? "Sypialnia" : "Pokój " + k, bedr * (u.rooms === 2 ? 1 : (k === 1 ? 1.12 : (u.rooms - 1 - 1.12) / (u.rooms - 2)))]);
+    }
+    out.push(["Łazienka", bath]); if (wc) out.push(["WC", wc]); out.push(["Przedpokój", hall]);
+    return out;
+  }
+  function drawPlan(u) {
+    var r = rooms(u), s = "";
+    var X = 20, Y = 20, W = 360, H = 240;
+    var main = r[0], others = r.slice(1);
+    var mainW = Math.round(W * Math.min(.62, Math.max(.42, main[1] / u.area + .12)));
+    s += '<rect x="' + X + '" y="' + Y + '" width="' + W + '" height="' + H + '" fill="#FFFFFF" stroke="#1C221E" stroke-width="6"/>';
+    s += cell(X, Y, mainW, H, main, true);
+    var colX = X + mainW, colW = W - mainW, total = others.reduce(function (t, o) { return t + o[1]; }, 0), y = Y;
+    var MIN = 40, free = H - MIN * others.length;
+    others.forEach(function (o, k) { var h = k === others.length - 1 ? Y + H - y : Math.round(MIN + free * o[1] / total); s += cell(colX, y, colW, h, o, false); y += h; });
+    s += '<rect x="' + (X + 30) + '" y="' + (Y + H - 3) + '" width="' + Math.round(mainW * .6) + '" height="20" fill="#DDE7CD" stroke="#4E6A2E" stroke-width="1.5"/>';
+    s += '<text x="' + (X + 30 + Math.round(mainW * .3)) + '" y="' + (Y + H + 13) + '" text-anchor="middle" font-family="Archivo, sans-serif" font-size="10" fill="#3B5222">' + u.extra + '</text>';
+    $("plan").innerHTML = s;
+  }
+  function cell(x, y, w, h, room, big) {
+    var c = '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + (big ? "#F6F7F2" : "#FFFFFF") + '" stroke="#1C221E" stroke-width="3"/>';
+    if (!big && h < 52) {
+      c += '<text x="' + (x + w / 2) + '" y="' + (y + h / 2 + 4) + '" text-anchor="middle" font-family="Archivo, sans-serif" font-size="12" fill="#1C221E"><tspan font-weight="600">' + room[0] + '</tspan> · ' + m2(room[1]) + '</text>';
+      return c;
+    }
+    c += '<text x="' + (x + w / 2) + '" y="' + (y + h / 2 - 2) + '" text-anchor="middle" font-family="Archivo, sans-serif" font-size="' + (big ? 15 : 12) + '" font-weight="600" fill="#1C221E">' + room[0] + '</text>';
+    c += '<text x="' + (x + w / 2) + '" y="' + (y + h / 2 + 15) + '" text-anchor="middle" font-family="Archivo, sans-serif" font-size="12" fill="#646D66">' + m2(room[1]) + '</text>';
+    return c;
+  }
+  var dlg = $("dlg");
+  function openUnit(nr) {
+    var u = units.filter(function (x) { return x.nr === nr; })[0]; if (!u) return;
+    $("dlg-eyebrow").textContent = FLOORS[u.floor] + " · " + ST_LABEL[u.st];
+    $("dlg-title").textContent = "Mieszkanie " + u.nr;
+    $("dlg-dl").innerHTML = "<dt>Pokoje</dt><dd>" + u.rooms + "</dd><dt>Metraż</dt><dd>" + m2(u.area) + "</dd><dt>Dodatkowo</dt><dd>" + u.extra + "</dd>" +
+      (u.st === "sold" ? "" : "<dt>Cena</dt><dd>" + zl(u.price) + "</dd><dt>Cena za m²</dt><dd>" + zl(u.ppm) + "</dd>");
+    $("dlg-rooms").innerHTML = rooms(u).map(function (r) { return "<div><span>" + r[0] + "</span><span>" + m2(r[1]) + "</span></div>"; }).join("");
+    $("dlg-ask").hidden = u.st === "sold";
+    $("dlg-ask").onclick = function () { $("a-unit").value = u.nr; dlg.close(); };
+    drawPlan(u);
+    if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+  }
+  $("dlg-close").addEventListener("click", function () { dlg.close(); });
+  dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+
+  /* contact */
+  units.filter(function (u) { return u.st !== "sold"; }).forEach(function (u) {
+    var o = document.createElement("option"); o.value = u.nr; o.textContent = u.nr + " · " + u.rooms + " pok. · " + m2(u.area); $("a-unit").appendChild(o);
+  });
+  $("ask").addEventListener("submit", function (e) { e.preventDefault(); $("a-ok").hidden = false; });
+
+  render();
+  window.__openUnit = openUnit;
+})();
+</script>
+</body>
+</html>
