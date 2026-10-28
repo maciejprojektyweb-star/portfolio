@@ -4,6 +4,9 @@ Strony, aplikacje, teksty, arkusze i grafika 3D przygotowane jako przykłady rea
 
 | Projekt | Demo |
 | --- | --- |
+| Wyżnia – domy na wynajem w górach (Next.js, Blender) | [wyznia/](https://maciejprojektyweb-star.github.io/portfolio/wyznia/) |
+| Obsada – strona aplikacji SaaS do grafiku pracy (Next.js) | [obsada/](https://maciejprojektyweb-star.github.io/portfolio/obsada/) |
+| Kolumna – strona biura rachunkowego (Next.js) | [kolumna/](https://maciejprojektyweb-star.github.io/portfolio/kolumna/) |
 | Pod Lipami – strona inwestycji z wyszukiwarką mieszkań | [pod-lipami.html](https://maciejprojektyweb-star.github.io/portfolio/pod-lipami.html) |
 | Wrzos – sklep internetowy palarni kawy | [sklep-palarnia.html](https://maciejprojektyweb-star.github.io/portfolio/sklep-palarnia.html) |
 | Lampka Kreska – wizualizacja 3D produktu | [lampa-3d.html](https://maciejprojektyweb-star.github.io/portfolio/lampa-3d.html) |
