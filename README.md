@@ -4,6 +4,7 @@ Strony, aplikacje, teksty, arkusze i grafika 3D przygotowane jako przykłady rea
 
 | Projekt | Demo |
 | --- | --- |
+| Ostróżka – sklep ogrodniczy z asystentem (Next.js) | [ostrozka/](https://maciejprojektyweb-star.github.io/portfolio/ostrozka/) |
 | Wyżnia – domy na wynajem w górach (Next.js, Blender) | [wyznia/](https://maciejprojektyweb-star.github.io/portfolio/wyznia/) |
 | Obsada – strona aplikacji SaaS do grafiku pracy (Next.js) | [obsada/](https://maciejprojektyweb-star.github.io/portfolio/obsada/) |
 | Kolumna – strona biura rachunkowego (Next.js) | [kolumna/](https://maciejprojektyweb-star.github.io/portfolio/kolumna/) |
