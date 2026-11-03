@@ -4,6 +4,9 @@ Strony, aplikacje, teksty, arkusze i grafika 3D przygotowane jako przykłady rea
 
 | Projekt | Demo |
 | --- | --- |
+| Teczka – aplikacja webowa z logowaniem dla biura rachunkowego (Next.js) | [teczka/](https://maciejprojektyweb-star.github.io/portfolio/teczka/) |
+| Przebieg – serwis ogłoszeń samochodowych z filtrami (Next.js) | [przebieg/](https://maciejprojektyweb-star.github.io/portfolio/przebieg/) |
+| Chwyt – identyfikacja wizualna i generator postów (Next.js) | [chwyt/](https://maciejprojektyweb-star.github.io/portfolio/chwyt/) |
 | Ostróżka – sklep ogrodniczy z asystentem (Next.js) | [ostrozka/](https://maciejprojektyweb-star.github.io/portfolio/ostrozka/) |
 | Wyżnia – domy na wynajem w górach (Next.js, Blender) | [wyznia/](https://maciejprojektyweb-star.github.io/portfolio/wyznia/) |
 | Obsada – strona aplikacji SaaS do grafiku pracy (Next.js) | [obsada/](https://maciejprojektyweb-star.github.io/portfolio/obsada/) |
@@ -14,6 +17,6 @@ Strony, aplikacje, teksty, arkusze i grafika 3D przygotowane jako przykłady rea
 | Generator ofert PDF – aplikacja webowa | [generator-ofert.html](https://maciejprojektyweb-star.github.io/portfolio/generator-ofert.html) |
 | Szprycha – teksty sklepu rowerowego PL i EN | [teksty-szprycha.html](https://maciejprojektyweb-star.github.io/portfolio/teksty-szprycha.html) |
 | Grafik zmian w Excelu | [grafik-zmian.html](https://maciejprojektyweb-star.github.io/portfolio/grafik-zmian.html) |
-| Mięta – strona gabinetu stomatologicznego | [mieta-stomatologia.html](https://maciejprojektyweb-star.github.io/portfolio/mieta-stomatologia.html) |
+| Mięta – gabinet stomatologiczny z zapisem online (Next.js) | [mieta/](https://maciejprojektyweb-star.github.io/portfolio/mieta/) |
 
 Strona z listą projektów: https://maciejprojektyweb-star.github.io/portfolio/
