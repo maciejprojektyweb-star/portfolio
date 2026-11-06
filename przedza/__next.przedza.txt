@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[88837,["/portfolio/_next/static/chunks/969aa71ad1dd8082.js","/portfolio/_next/static/chunks/33f560ff9959eedd.js"],"default"]
+3:I[39756,["/portfolio/_next/static/chunks/6cb206721a82e276.js"],"default"]
+4:I[37457,["/portfolio/_next/static/chunks/6cb206721a82e276.js"],"default"]
+:HL["/portfolio/_next/static/chunks/40ee2f268a500745.css","style"]
+0:{"buildId":"eNTB0RBZR78AA5T8rkECj","rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/portfolio/_next/static/chunks/40ee2f268a500745.css","precedence":"next"}],["$","script","script-0",{"src":"/portfolio/_next/static/chunks/969aa71ad1dd8082.js","async":true}],["$","script","script-1",{"src":"/portfolio/_next/static/chunks/33f560ff9959eedd.js","async":true}]],["$","div",null,{"className":"przedza min-h-screen","children":[["$","$L2",null,{}],["$","a",null,{"href":"#tresc","className":"sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:bg-[var(--cegla)] focus:px-5 focus:py-3 focus:text-white","children":"Przejdź do treści"}],["$","$L3",null,{"parallelRouterKey":"children","template":["$","$L4",null,{}]}]]}]]}],"loading":null,"isPartial":false}

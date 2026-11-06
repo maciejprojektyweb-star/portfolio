@@ -1,4 +1,4 @@
-:HL["/portfolio/_next/static/chunks/10581932396e9116.css","style"]
+:HL["/portfolio/_next/static/chunks/d39f8c8480eac216.css","style"]
 :HL["/portfolio/_next/static/chunks/6d03ce64b504f908.css","style"]
 :HC["/",""]
-0:{"buildId":"Hkd-mrksD181gj6-WanZe","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"chwyt","paramType":null,"paramKey":"chwyt","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"eNTB0RBZR78AA5T8rkECj","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"chwyt","paramType":null,"paramKey":"chwyt","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

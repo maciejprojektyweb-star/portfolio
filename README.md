@@ -4,6 +4,10 @@ Strony, aplikacje, teksty, arkusze i grafika 3D przygotowane jako przykłady rea
 
 | Projekt | Demo |
 | --- | --- |
+| Wiraż – sklep z e-rowerem i animacją 3D (Next.js, GSAP, Blender) | [wiraz/](https://maciejprojektyweb-star.github.io/portfolio/wiraz/) |
+| Wręga – kuchnie na wymiar z konfiguratorem (Next.js, Blender) | [wrega/](https://maciejprojektyweb-star.github.io/portfolio/wrega/) |
+| Łoza – winiarnia z rezerwacją stolika (Next.js, Blender) | [loza/](https://maciejprojektyweb-star.github.io/portfolio/loza/) |
+| Kwartał Przędza – inwestycja mieszkaniowa z makietą 3D (Next.js, Three.js) | [przedza/](https://maciejprojektyweb-star.github.io/portfolio/przedza/) |
 | Teczka – aplikacja webowa z logowaniem dla biura rachunkowego (Next.js) | [teczka/](https://maciejprojektyweb-star.github.io/portfolio/teczka/) |
 | Przebieg – serwis ogłoszeń samochodowych z filtrami (Next.js) | [przebieg/](https://maciejprojektyweb-star.github.io/portfolio/przebieg/) |
 | Chwyt – identyfikacja wizualna i generator postów (Next.js) | [chwyt/](https://maciejprojektyweb-star.github.io/portfolio/chwyt/) |
