@@ -1,6 +1,6 @@
-:HL["/portfolio/_next/static/chunks/7a4fa525ee338eef.css","style"]
+:HL["/portfolio/_next/static/chunks/10581932396e9116.css","style"]
 :HL["/portfolio/_next/static/chunks/65147a23b8c9baef.css","style"]
 :HL["/portfolio/_next/static/chunks/931f74199e62dc0a.css","style"]
 :HL["/portfolio/_next/static/chunks/cb60aca16bff2999.css","style"]
 :HC["/",""]
-0:{"buildId":"6lMAqIBQ6HkGyxDSHLaRc","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"teczka","paramType":null,"paramKey":"teczka","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"Hkd-mrksD181gj6-WanZe","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"teczka","paramType":null,"paramKey":"teczka","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
