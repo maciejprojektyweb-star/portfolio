@@ -3,53 +3,57 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Maciej – portfolio stron i aplikacji</title>
-<meta name="description" content="Portfolio: strony internetowe, aplikacje webowe i narzędzia dla firm.">
+<title>Maciej – strony, sklepy i aplikacje webowe</title>
+<meta name="description" content="Portfolio: strony i sklepy internetowe, aplikacje webowe, projekty UX/UI i identyfikacja.">
+<meta name="theme-color" content="#131518">
+<link rel="icon" href="awatar.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&family=Figtree:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap">
 <style>
-:root { --ink: #1D1A17; --paper: #F7F3EE; --coral: #F06A4A; --sun: #F5C04A; --teal: #3FA7A0; --text: #24201C; --muted: #6B6259; --line: #E6DED4; }
+:root { --tlo: #131518; --karta: #1A1D22; --linia: rgba(255,255,255,.08); --biel: #F4F2EE; --szary: #A3A9B0; --ok: #4ADE80; }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--paper); color: var(--text); font-family: "Figtree", system-ui, sans-serif; font-size: 17px; line-height: 1.55; }
-.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
-.hero { background: var(--ink); color: #F4EFE8; position: relative; overflow: hidden; }
-.hero .wrap { position: relative; z-index: 1; padding-block: 56px 48px; display: grid; gap: 14px; }
-.shape { position: absolute; display: block; }
-.s1 { width: 220px; height: 220px; border-radius: 50%; background: var(--coral); right: -40px; top: -70px; }
-.s2 { width: 120px; height: 120px; border-radius: 12px; background: var(--sun); right: 150px; bottom: -40px; transform: rotate(14deg); }
-.s3 { width: 0; height: 0; border-left: 46px solid transparent; border-right: 46px solid transparent; border-bottom: 80px solid var(--teal); right: 300px; top: 30px; }
-.mark { width: 52px; height: 52px; border-radius: 50%; background: #2A2622; position: relative; }
-.mark i { position: absolute; display: block; }
-.mark .c { width: 20px; height: 20px; border-radius: 50%; background: var(--coral); left: 11px; top: 11px; }
-.mark .q { width: 17px; height: 17px; border-radius: 3px; background: var(--sun); left: 24px; top: 21px; transform: rotate(14deg); }
-.mark .t { width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 17px solid var(--teal); left: 9px; top: 26px; }
-h1, h2 { font-family: "Outfit", "Figtree", sans-serif; margin: 0; line-height: 1.1; text-wrap: balance; }
-h1 { font-size: clamp(32px, 5vw, 46px); max-width: 18ch; }
-.hero p { color: #D8D0C6; max-width: 60ch; margin: 0; }
-.hero p b { color: var(--sun); font-weight: 600; }
-h2 { font-size: 24px; color: var(--ink); }
-.list { display: grid; gap: 28px; padding-block: 40px 56px; }
-article { background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: grid; grid-template-columns: 1.3fr 1fr; }
-article img { width: 100%; height: 100%; object-fit: cover; display: block; background: var(--ink); }
-.body { padding: 26px; display: grid; gap: 12px; align-content: start; }
-.body p { margin: 0; color: var(--muted); }
+html { color-scheme: dark; }
+body { margin: 0; background: var(--tlo); color: var(--biel); font-family: "Geist", system-ui, sans-serif; font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--linia); }
+.hero .wrap { position: relative; z-index: 2; padding-block: 72px 76px; display: grid; gap: 20px; }
+.mark { width: 56px; height: 56px; border-radius: 50%; display: block; box-shadow: 0 0 0 1px rgba(255,255,255,.12); }
+.pill { justify-self: start; display: inline-flex; align-items: center; gap: 9px; margin: 6px 0 0; padding: 6px 14px 6px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04); font-size: 14px; font-weight: 500; line-height: 1.2; color: #C9CDD2; }
+.pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px rgba(74,222,128,.18); }
+h1 { margin: 0; font-weight: 640; font-size: clamp(40px, 6.2vw, 70px); line-height: 1.02; letter-spacing: -.035em; background: linear-gradient(180deg, #FFFFFF 30%, #B9BEC5); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { margin: 0; max-width: 40ch; color: var(--szary); font-size: 18px; }
+.sciana { position: absolute; z-index: 1; left: 54%; top: -190px; display: flex; gap: 18px; transform: perspective(1600px) rotateX(24deg) rotateY(-16deg) rotateZ(10deg); }
+.sciana div { display: flex; flex-direction: column; gap: 18px; }
+.sciana div:nth-child(1) { transform: translateY(40px); }
+.sciana div:nth-child(2) { transform: translateY(-70px); }
+.sciana img { display: block; width: 340px; height: auto; border-radius: 12px; box-shadow: 0 0 0 1px rgba(255,255,255,.10), 0 24px 48px rgba(0,0,0,.55); }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(90deg, var(--tlo) 0%, var(--tlo) 42%, rgba(19,21,24,.6) 58%, rgba(19,21,24,0) 74%), linear-gradient(180deg, rgba(19,21,24,.5) 0%, rgba(19,21,24,0) 25%, rgba(19,21,24,0) 72%, var(--tlo) 100%); }
+.list { display: grid; gap: 24px; padding-block: 56px 64px; }
+article { background: var(--karta); border: 1px solid var(--linia); border-radius: 18px; overflow: hidden; display: grid; grid-template-columns: 1.3fr 1fr; }
+article img { width: 100%; height: 100%; object-fit: cover; display: block; background: var(--tlo); }
+.body { padding: 28px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+h2 { margin: 0; font-size: 24px; font-weight: 620; line-height: 1.15; letter-spacing: -.02em; color: var(--biel); text-wrap: balance; }
+.body p { margin: 0; color: var(--szary); }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.tags span { font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: var(--paper); color: var(--ink); border: 1px solid var(--line); }
-a.btn { justify-self: start; margin-top: 6px; display: inline-block; padding: 11px 18px; border-radius: 8px; background: var(--ink); color: #fff; text-decoration: none; font-weight: 600; }
-a.btn:hover { background: #3A332C; }
-a.btn:focus-visible { outline: 3px solid var(--coral); outline-offset: 2px; }
-footer { color: var(--muted); font-size: 14px; padding-bottom: 32px; }
-@media (max-width: 780px) { article { grid-template-columns: 1fr; } .s3 { display: none; } .s2 { right: -40px; bottom: -70px; } }
+.tags span { font-size: 13px; font-weight: 500; padding: 3px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); color: #C9CDD2; }
+a.btn { justify-self: start; margin-top: 6px; display: inline-block; padding: 11px 18px; border-radius: 10px; background: var(--biel); color: var(--tlo); text-decoration: none; font-weight: 600; }
+a.btn:hover { background: #FFFFFF; }
+a.btn:focus-visible { outline: 2px solid var(--biel); outline-offset: 3px; }
+footer { color: #858B92; font-size: 14px; padding-bottom: 40px; }
+@media (max-width: 860px) { .sciana { display: none; } .hero::after { display: none; } .hero .wrap { padding-block: 48px 52px; } }
+@media (max-width: 780px) { article { grid-template-columns: 1fr; } .body { padding: 22px; } }
 </style>
 </head>
 <body>
 <header class="hero">
-  <i class="shape s1" aria-hidden="true"></i><i class="shape s2" aria-hidden="true"></i><i class="shape s3" aria-hidden="true"></i>
+  <div class="sciana" aria-hidden="true"><div><img src="sciana-teczka.jpg" alt="" width="340" height="212"><img src="sciana-loza.jpg" alt="" width="340" height="212"><img src="sciana-wrega.jpg" alt="" width="340" height="212"></div><div><img src="sciana-przebieg.jpg" alt="" width="340" height="212"><img src="sciana-wiraz.jpg" alt="" width="340" height="212"><img src="sciana-przedza.jpg" alt="" width="340" height="212"></div><div><img src="sciana-loza.jpg" alt="" width="340" height="212"><img src="sciana-teczka.jpg" alt="" width="340" height="212"><img src="sciana-wiraz.jpg" alt="" width="340" height="212"></div></div>
   <div class="wrap">
-    <div class="mark" aria-hidden="true"><i class="c"></i><i class="q"></i><i class="t"></i></div>
-    <h1>Strony, aplikacje i design</h1>
-    <p>Maciej – strony i sklepy internetowe, aplikacje webowe i design. Poniżej wybrane projekty: strony, aplikacje, identyfikacja i arkusze.</p>
+    <img class="mark" src="awatar.png" alt="" width="56" height="56">
+    <p class="pill"><i aria-hidden="true"></i>Przyjmuję nowe zlecenia</p>
+    <h1>Strony, sklepy<br>i aplikacje webowe</h1>
+    <p class="lead">Maciej – projektuję i buduję strony, sklepy i aplikacje webowe dla małych firm. Poniżej wybrane projekty: strony, sklepy, aplikacje, identyfikacja i arkusze.</p>
   </div>
 </header>
 <main class="wrap list">
